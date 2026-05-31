@@ -218,33 +218,33 @@
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
     
-    // Note properties point cleanly to both specific target wav files
+    // Updated bellWav values match the exact layout in your GitHub folder screenshot
     const progression = [
-        { id: "G3",  solfege: "So 3", voiceWav: "So 3.wav", bellWav: "Bell G3.wav", type: "white", style: "G3" },
-        { id: "Ab3", solfege: "Si 3", voiceWav: "Si 3.wav", bellWav: "Bell Ab3.wav", type: "black", style: "Ab3" },
-        { id: "A3",  solfege: "La 3", voiceWav: "La 3.wav", bellWav: "Bell A3.wav", type: "white", style: "A3" },
-        { id: "Bb3", solfege: "Te 3", voiceWav: "Te 3.wav", bellWav: "Bell Bb3.wav", type: "black", style: "Bb3" },
-        { id: "B3",  solfege: "Ti 3", voiceWav: "Ti 3.wav", bellWav: "Bell B3.wav", type: "white", style: "B3" },
-        { id: "C4",  solfege: "Do 4", voiceWav: "Do 4.wav", bellWav: "Bell C4.wav", type: "white", style: "C4" },
-        { id: "Db4", solfege: "Di 4", voiceWav: "Di 4.wav", bellWav: "Bell Db4.wav", type: "black", style: "Db4" },
-        { id: "D4",  solfege: "Re 4", voiceWav: "Re 4.wav", bellWav: "Bell D4.wav", type: "white", style: "D4" },
-        { id: "Eb4", solfege: "Me 4", voiceWav: "Me 4.wav", bellWav: "Bell Eb4.wav", type: "black", style: "Eb4" },
-        { id: "E4",  solfege: "Mi 4", voiceWav: "Mi 4.wav", bellWav: "Bell E4.wav", type: "white", style: "E4" },
-        { id: "F4",  solfege: "Fa 4", voiceWav: "Fa 4.wav", bellWav: "Bell F4.wav", type: "white", style: "F4" },
-        { id: "Gb4", solfege: "Fi 4", voiceWav: "Fi 4.wav", bellWav: "Bell Gb4.wav", type: "black", style: "Gb4" },
-        { id: "G4",  solfege: "So 4", voiceWav: "So 4.wav", bellWav: "Bell G4.wav", type: "white", style: "G4" },
-        { id: "Ab4", solfege: "Si 4", voiceWav: "Si 4.wav", bellWav: "Bell Ab4.wav", type: "black", style: "Ab4" },
-        { id: "A4",  solfege: "La 4", voiceWav: "La 4.wav", bellWav: "Bell A4.wav", type: "white", style: "A4" },
-        { id: "Bb4", solfege: "Te 4", voiceWav: "Te 4.wav", bellWav: "Bell Bb4.wav", type: "black", style: "Bb4" },
-        { id: "B4",  solfege: "Ti 4", voiceWav: "Ti 4.wav", bellWav: "Bell B4.wav", type: "white", style: "B4" },
-        { id: "C5",  solfege: "Do 5", voiceWav: "Do 5.wav", bellWav: "Bell C5.wav", type: "white", style: "C5" },
-        { id: "Db5", solfege: "Di 5", voiceWav: "Di 5.wav", bellWav: "Bell Db5.wav", type: "black", style: "Db5" },
-        { id: "D5",  solfege: "Re 5", voiceWav: "Re 5.wav", bellWav: "Bell D5.wav", type: "white", style: "D5" },
-        { id: "Eb5", solfege: "Me 5", voiceWav: "Me 5.wav", bellWav: "Bell Eb5.wav", type: "black", style: "Eb5" },
-        { id: "E5",  solfege: "Mi 5", voiceWav: "Mi 5.wav", bellWav: "Bell E5.wav", type: "white", style: "E5" },
-        { id: "F5",  solfege: "Fa 5", voiceWav: "Fa 5.wav", bellWav: "Bell F5.wav", type: "white", style: "F5" },
-        { id: "Gb5", solfege: "Fi 5", voiceWav: "Fi 5.wav", bellWav: "Bell Gb5.wav", type: "black", style: "Gb5" },
-        { id: "G5",  solfege: "So 5", voiceWav: "So 5.wav", bellWav: "Bell G5.wav", type: "white", style: "G5" }
+        { id: "G3",  solfege: "So 3", voiceWav: "So 3.wav", bellWav: "So 3 Bell.wav", type: "white", style: "G3" },
+        { id: "Ab3", solfege: "Si 3", voiceWav: "Si 3.wav", bellWav: "Si 3 Bell.wav", type: "black", style: "Ab3" },
+        { id: "A3",  solfege: "La 3", voiceWav: "La 3.wav", bellWav: "La 3 Bell.wav", type: "white", style: "A3" },
+        { id: "Bb3", solfege: "Te 3", voiceWav: "Te 3.wav", bellWav: "Te 3 Bell.wav", type: "black", style: "Bb3" },
+        { id: "B3",  solfege: "Ti 3", voiceWav: "Ti 3.wav", bellWav: "Ti 3 Bell.wav", type: "white", style: "B3" },
+        { id: "C4",  solfege: "Do 4", voiceWav: "Do 4.wav", bellWav: "Do 4 Bell.wav", type: "white", style: "C4" },
+        { id: "Db4", solfege: "Di 4", voiceWav: "Di 4.wav", bellWav: "Di 4 Bell.wav", type: "black", style: "Db4" },
+        { id: "D4",  solfege: "Re 4", voiceWav: "Re 4.wav", bellWav: "Re 4 Bell.wav", type: "white", style: "D4" },
+        { id: "Eb4", solfege: "Me 4", voiceWav: "Me 4.wav", bellWav: "Me 4 Bell.wav", type: "black", style: "Eb4" },
+        { id: "E4",  solfege: "Mi 4", voiceWav: "Mi 4.wav", bellWav: "Mi 4 Bell.wav", type: "white", style: "E4" },
+        { id: "F4",  solfege: "Fa 4", voiceWav: "Fa 4.wav", bellWav: "Fa 4 Bell.wav", type: "white", style: "F4" },
+        { id: "Gb4", solfege: "Fi 4", voiceWav: "Fi 4.wav", bellWav: "Fi 4 Bell.wav", type: "black", style: "Gb4" },
+        { id: "G4",  solfege: "So 4", voiceWav: "So 4.wav", bellWav: "So 4 Bell.wav", type: "white", style: "G4" },
+        { id: "Ab4", solfege: "Si 4", voiceWav: "Si 4.wav", bellWav: "Si 4 Bell.wav", type: "black", style: "Ab4" },
+        { id: "A4",  solfege: "La 4", voiceWav: "La 4.wav", bellWav: "La 4 Bell.wav", type: "white", style: "A4" },
+        { id: "Bb4", solfege: "Te 4", voiceWav: "Te 4.wav", bellWav: "Te 4 Bell.wav", type: "black", style: "Bb4" },
+        { id: "B4",  solfege: "Ti 4", voiceWav: "Ti 4.wav", bellWav: "Ti 4 Bell.wav", type: "white", style: "B4" },
+        { id: "C5",  solfege: "Do 5", voiceWav: "Do 5.wav", bellWav: "Do 5 Bell.wav", type: "white", style: "C5" },
+        { id: "Db5", solfege: "Di 5", voiceWav: "Di 5.wav", bellWav: "Di 5 Bell.wav", type: "black", style: "Db5" },
+        { id: "D5",  solfege: "Re 5", voiceWav: "Re 5.wav", bellWav: "Re 5 Bell.wav", type: "white", style: "D5" },
+        { id: "Eb5", solfege: "Me 5", voiceWav: "Me 5.wav", bellWav: "Me 5 Bell.wav", type: "black", style: "Eb5" },
+        { id: "E5",  solfege: "Mi 5", voiceWav: "Mi 5.wav", bellWav: "Mi 5 Bell.wav", type: "white", style: "E5" },
+        { id: "F5",  solfege: "Fa 5", voiceWav: "Fa 5.wav", bellWav: "Fa 5 Bell.wav", type: "white", style: "F5" },
+        { id: "Gb5", solfege: "Fi 5", voiceWav: "Fi 5.wav", bellWav: "Fi 5 Bell.wav", type: "black", style: "Gb5" },
+        { id: "G5",  solfege: "So 5", voiceWav: "So 5.wav", bellWav: "So 5 Bell.wav", type: "white", style: "G5" }
     ];
     
     let voiceBuffers = {}; 
