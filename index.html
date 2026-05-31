@@ -1,462 +1,332 @@
-<html lang="en"> 
- <head> 
-     <meta charset="UTF-8"> 
-     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-     <title>Zayne's Ear Training</title> 
-     <style> 
-         * { box-sizing: border-box; } 
-         :root { 
-             --bg-dark: #0f172a; 
-             --panel-bg: #1e293b; 
-             --text-main: #ffffff; 
-             --text-sub: #94a3b8; 
-             --keyboard-bg: #0b0f19; 
-         } 
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zayne's Ear Training</title>
+    <style>
+        * { box-sizing: border-box; }
+        :root {
+            --bg-dark: #0f172a;
+            --panel-bg: #1e293b;
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+            --keyboard-bg: #0b0f19;
+        }
 
-         body { 
-             font-family: 'Segoe UI', Roboto, Arial, sans-serif; 
-             background-color: var(--bg-dark); 
-             color: var(--text-main); 
-             margin: 0; 
-             display: flex; 
-             justify-content: center; 
-             padding: 20px; 
-         } 
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
 
-         .container { width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; } 
+        .container { width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; }
 
+        h1 { color: #38bdf8; font-size: 2.5rem; font-weight: 800; text-align: center; margin: 10px 0 5px 0; width: 100%; letter-spacing: 1px; }
 
-         h1 { color: #38bdf8; font-size: 2.5rem; font-weight: 800; 
-text-align: center; margin: 10px 0 5px 0; width: 100%; letter-spacing: 
-1px; } 
+        .header-line { width: 80%; height: 2px; background: #38bdf8; margin-bottom: 25px; opacity: 0.5; }
 
-         .header-line { width: 80%; height: 2px; background: #38bdf8; margin-bottom: 25px; opacity: 0.5; } 
+        .game-panel {
+            background-color: var(--panel-bg);
+            padding: 25px;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
 
-         .game-panel { 
-             background-color: var(--panel-bg); 
-             padding: 25px; 
-             border-radius: 30px; 
-             display: flex; 
-             flex-direction: column; 
-             align-items: center; 
-             width: 100%; 
-         } 
+        #msg { font-weight: 600; color: #94a3b8; min-height: 1.5rem; text-align: center; margin-bottom: 20px; font-size: 1.1rem; }
 
-         .selection-panel { 
-             background: rgba(15, 23, 42, 0.6); 
-             border-radius: 15px; 
-             padding: 15px; 
-             margin-bottom: 25px; 
-             width: 100%; 
-             border: 1px solid #334155; 
-         } 
-         .selection-title { 
-             font-size: 0.9rem; 
-             font-weight: 700; 
-             text-transform: uppercase; 
-             color: #38bdf8; 
-             margin-bottom: 10px; 
-             text-align: center; 
-         } 
-         .pool-controls { 
-             display: flex; 
-             justify-content: center; 
-             gap: 15px; 
-             margin-bottom: 12px; 
-         } 
-         .pool-btn { 
-             background: #334155; 
-             color: #ffffff; 
-             border: none; 
-             padding: 4px 12px; 
-             border-radius: 6px; 
-             font-size: 0.75rem; 
-             font-weight: 600; 
-             cursor: pointer; 
-         } 
-         .pool-btn:hover { background: #475569; } 
-         .checkbox-grid { 
-             display: grid; 
-             grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); 
-             gap: 8px; 
-             max-height: 150px; 
-             overflow-y: auto; 
-             padding: 5px; 
-         } 
-         .check-item { 
-             display: flex; 
-             align-items: center; 
-             gap: 5px; 
-             font-size: 0.8rem; 
-             cursor: pointer; 
-         } 
+        .keyboard-wrapper {
+            background-color: var(--keyboard-bg);
+            padding: 30px 20px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 1100px; 
+            overflow-x: auto;
+            overflow-y: hidden;
+            display: block;
+            -webkit-overflow-scrolling: touch; 
+            border: 4px solid #1e293b;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
 
+        @media screen and (orientation: landscape) {
+            .keyboard-wrapper {
+                max-width: 100%; 
+                display: flex;
+                justify-content: center;
+            }
+        }
 
-         #msg { font-weight: 600; color: #94a3b8; min-height: 1.5rem; 
-text-align: center; margin-bottom: 20px; font-size: 1.1rem; } 
+        .keyboard-wrapper::-webkit-scrollbar { height: 10px; }
+        .keyboard-wrapper::-webkit-scrollbar-track { background: #0b0f19; border-radius: 10px; }
+        .keyboard-wrapper::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+        .keyboard-wrapper::-webkit-scrollbar-thumb:hover { background: #0ea5e9; }
 
-         .keyboard-wrapper { 
-             background-color: var(--keyboard-bg); 
-             padding: 30px 20px; 
-             border-radius: 20px; 
-             width: 100%; 
-             max-width: 1100px;  
-             overflow-x: auto; 
-             overflow-y: hidden; 
-             display: block; 
-             -webkit-overflow-scrolling: touch;  
-             border: 4px solid #1e293b; 
-             box-shadow: inset 0 0 20px rgba(0,0,0,0.8); 
-         } 
+        .piano-grid {
+            position: relative;
+            display: block;
+            width: max-content;
+            height: 240px;
+            background: #000;
+            padding: 4px;
+            border-radius: 4px;
+        }
 
-         @media screen and (orientation: landscape) { 
-             .keyboard-wrapper { 
-                 max-width: 100%;  
-                 display: flex; 
-                 justify-content: center; 
-             } 
-         } 
+        .sharps-layer {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 100%;
+            height: 145px;
+            z-index: 2;
+            pointer-events: none;
+            display: grid;
+            grid-template-columns: repeat(15, 60px);
+            gap: 5px;
+        }
 
-         .keyboard-wrapper::-webkit-scrollbar { height: 10px; } 
-         .keyboard-wrapper::-webkit-scrollbar-track { background: #0b0f19; border-radius: 10px; } 
-         .keyboard-wrapper::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; } 
-         .keyboard-wrapper::-webkit-scrollbar-thumb:hover { background: #0ea5e9; } 
+        .naturals-layer { 
+            display: grid;
+            grid-template-columns: repeat(15, 60px);
+            gap: 5px;
+            height: 100%;
+        }
 
-         .piano-grid { 
-             position: relative; 
-             display: block; 
-             width: max-content; 
-             height: 240px; 
-             background: #000; 
-             padding: 4px; 
-             border-radius: 4px; 
-         } 
+        .bell-btn {
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            transition: filter 0.2s, transform 0.05s, box-shadow 0.05s;
+            pointer-events: auto;
+            padding-bottom: 15px;
+        }
+        
+        /* Traditional White Keys Styling */
+        .naturals-layer .bell-btn {
+            height: 232px;
+            background: linear-gradient(to bottom, #eeeeee 0%, #ffffff 100%);
+            border-radius: 0 0 7px 7px;
+            box-shadow: inset 0 2px 3px #ffffff, 0 4px 6px rgba(0,0,0,0.25);
+            border-bottom: 4px solid #cccccc;
+        }
 
-         .sharps-layer { 
-             position: absolute; 
-             top: 4px; 
-             left: 4px; 
-             width: 100%; 
-             height: 145px; 
-             z-index: 2; 
-             pointer-events: none; 
-             display: grid; 
-             grid-template-columns: repeat(15, 60px); 
-             gap: 5px; 
-         } 
+        /* Traditional Black Keys Styling */
+        .sharps-layer .bell-btn {
+            height: 145px;
+            width: 38px;
+            background: linear-gradient(to bottom, #333333 0%, #111111 100%);
+            border-radius: 0 0 5px 5px;
+            z-index: 3;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 2px 4px 8px rgba(0,0,0,0.5);
+            border-bottom: 5px solid #000000;
+            padding-bottom: 10px;
+        }
 
-         .naturals-layer {  
-             display: grid; 
-             grid-template-columns: repeat(15, 60px); 
-             gap: 5px; 
-             height: 100%; 
-         } 
+        .naturals-layer .bell-btn:active { 
+            transform: translateY(2px);
+            border-bottom-width: 1px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
+            background: #f5f5f5;
+        }
 
-         .bell-btn { 
-             border: 1px solid rgba(0, 0, 0, 0.2); 
-             cursor: pointer; 
-             display: flex; 
-             align-items: flex-end; 
-             justify-content: center; 
-             position: relative; 
-             transition: filter 0.2s, transform 0.05s, box-shadow 0.05s; 
-             pointer-events: auto; 
-             padding-bottom: 15px; 
-         } 
-          
-         /* Traditional White Keys Styling */ 
-         .naturals-layer .bell-btn { 
-             height: 232px; 
-             background: linear-gradient(to bottom, #eeeeee 0%, #ffffff 100%); 
-             border-radius: 0 0 7px 7px; 
-             box-shadow: inset 0 2px 3px #ffffff, 0 4px 6px rgba(0,0,0,0.25); 
-             border-bottom: 4px solid #cccccc; 
-         } 
+        .sharps-layer .bell-btn:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            background: #222222;
+        }
+        
+        /* Centered Colored Solfege Square Badge */
+        .color-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.75rem;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin: 0 auto;
+        }
 
-         /* Traditional Black Keys Styling */ 
-         .sharps-layer .bell-btn { 
-             height: 145px; 
-             width: 38px; 
-             background: linear-gradient(to bottom, #333333 0%, #111111 100%); 
-             border-radius: 0 0 5px 5px; 
-             z-index: 3; 
-             box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 2px 4px 8px rgba(0,0,0,0.5); 
-             border-bottom: 5px solid #000000; 
-             padding-bottom: 10px; 
-         } 
+        /* Slightly smaller square badge for the black keys */
+        .sharps-layer .color-badge {
+            width: 32px;
+            height: 32px;
+            font-size: 0.65rem;
+            border-radius: 6px;
+        }
 
-         .naturals-layer .bell-btn:active {  
-             transform: translateY(2px); 
-             border-bottom-width: 1px; 
-             box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2); 
-             background: #f5f5f5; 
-         } 
+        /* Piano layout spacing configurations for accidental positions */
+        #btn-Ab3  { grid-column: 1; margin-left: 38px; }
+        #btn-Bb3  { grid-column: 2; margin-left: 38px; }
+        #btn-Db4  { grid-column: 4; margin-left: 38px; }
+        #btn-Eb4  { grid-column: 5; margin-left: 38px; }
+        #btn-Gb4  { grid-column: 7; margin-left: 38px; }
+        #btn-Ab4  { grid-column: 8; margin-left: 38px; }
+        #btn-Bb4  { grid-column: 9; margin-left: 38px; }
+        #btn-Db5  { grid-column: 11; margin-left: 38px; }
+        #btn-Eb5  { grid-column: 12; margin-left: 38px; }
+        #btn-Gb5  { grid-column: 14; margin-left: 38px; }
 
-         .sharps-layer .bell-btn:active { 
-             transform: translateY(2px); 
-             border-bottom-width: 2px; 
-             box-shadow: 1px 1px 3px rgba(0,0,0,0.5); 
-             background: #222222; 
-         } 
+        /* Exact Original Tone Palette Mapped into the Inner Badges */
+        .bell-btn.G3 .color-badge,  .bell-btn.G4 .color-badge,  .bell-btn.G5 .color-badge   { background: linear-gradient(to bottom, #3a6d6b, #4d908e); } 
+        .bell-btn.Ab3 .color-badge, .bell-btn.Ab4 .color-badge, .bell-btn.Ab5 .color-badge  { background: linear-gradient(to bottom, #1d5f7a, #277da1); } 
+        .bell-btn.A3 .color-badge,  .bell-btn.A4 .color-badge                               { background: linear-gradient(to bottom, #513970, #6a4c93); } 
+        .bell-btn.Bb3 .color-badge, .bell-btn.Bb4 .color-badge                              { background: linear-gradient(to bottom, #654e80, #8367a6); } 
+        .bell-btn.B3 .color-badge,  .bell-btn.B4 .color-badge                               { background: linear-gradient(to bottom, #c4436e, #f35b8c); } 
+        .bell-btn.C4 .color-badge,  .bell-btn.C5 .color-badge                               { background: linear-gradient(to bottom, #ab1f1f, #d62828); } 
+        .bell-btn.Db4 .color-badge, .bell-btn.Db5 .color-badge                              { background: linear-gradient(to bottom, #bd4931, #e65c40); } 
+        .bell-btn.D4 .color-badge,  .bell-btn.D5 .color-badge                               { background: linear-gradient(to bottom, #c75b20, #f3722c); } 
+        .bell-btn.Eb4 .color-badge, .bell-btn.Eb5 .color-badge                              { background: linear-gradient(to bottom, #cca23c, #f9c74f); } 
+        .bell-btn.E4 .color-badge,  .bell-btn.E5 .color-badge                               { background: linear-gradient(to bottom, #cca60f, #f9cd13); } 
+        .bell-btn.F4 .color-badge,  .bell-btn.F5 .color-badge                               { background: linear-gradient(to bottom, #729955, #90be6d); } 
+        .bell-btn.Gb4 .color-badge, .bell-btn.Gb5 .color-badge                              { background: linear-gradient(to bottom, #32826a, #43aa8b); } 
+    </style></head><body><div class="container">
+    <h1>Zayne's Ear Training</h1>
+    <div class="header-line"></div>
 
-         .bell-btn.dimmed { filter: grayscale(80%) brightness(20%); opacity: 0.2; pointer-events: none; } 
-          
-         /* Centered Colored Solfege Square Badge */ 
-         .color-badge { 
-             width: 44px; 
-             height: 44px; 
-             border-radius: 8px; 
-             display: flex; 
-             align-items: center; 
-             justify-content: center; 
-             font-weight: 800; 
-             font-size: 0.75rem; 
-             color: #ffffff; 
-             text-shadow: 1px 1px 2px rgba(0,0,0,0.8); 
-             box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
-             border: 1px solid rgba(255, 255, 255, 0.15); 
-             margin: 0 auto; 
-         } 
+    <div class="game-panel">
+        <div id="msg">Loading audio components... Please wait.</div>
 
-         /* Slightly smaller square badge for the black keys */ 
-         .sharps-layer .color-badge { 
-             width: 32px; 
-             height: 32px; 
-             font-size: 0.65rem; 
-             border-radius: 6px; 
-         } 
+        <div class="keyboard-wrapper">
+            <div class="piano-grid">
+                <div class="sharps-layer" id="sharps-container"></div>
+                <div class="naturals-layer" id="naturals-container"></div>
+            </div>
+        </div>
+    </div></div><script>
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    
+    const progression = [
+        { id: "G3",  solfege: "So 3", mp3File: "So 4 Bell.wav", wavFile: "So 3 Bell.wav", type: "white", style: "G3" },
+        { id: "Ab3", solfege: "Si 3", mp3File: "Si 4 Bell.wav", wavFile: "Si 3 Bell.wav", type: "black", style: "Ab3" },
+        { id: "A3",  solfege: "La 3", mp3File: "La 3 Bell.wav", wavFile: "La 3 Bell.wav", type: "white", style: "A3" },
+        { id: "Bb3", solfege: "Te 3", mp3File: "Te 3 Bell.wav", wavFile: "Te 3 Bell.wav", type: "black", style: "Bb3" },
+        { id: "B3",  solfege: "Ti 3", mp3File: "Ti 3 Bell.wav", wavFile: "Ti 3 Bell.wav", type: "white", style: "B3" },
+        { id: "C4",  solfege: "Do 4", mp3File: "Do 4 Bell.wav", wavFile: "Do 4 Bell.wav", type: "white", style: "C4" },
+        { id: "Db4", solfege: "Di 4", mp3File: "Di 4 Bell.wav", wavFile: "Di 4 Bell.wav", type: "black", style: "Db4" },
+        { id: "D4",  solfege: "Re 4", mp3File: "Re 4 Bell.wav", wavFile: "Re 4 Bell.wav", type: "white", style: "D4" },
+        { id: "Eb4", solfege: "Me 4", mp3File: "Me 4 Bell.wav", wavFile: "Me 4 Bell.wav", type: "black", style: "Eb4" },
+        { id: "E4",  solfege: "Mi 4", mp3File: "Mi 4 Bell.wav", wavFile: "Mi 4 Bell.wav", type: "white", style: "E4" },
+        { id: "F4",  solfege: "Fa 4", mp3File: "Fa 4 Bell.wav", wavFile: "Fa 4 Bell.wav", type: "white", style: "F4" },
+        { id: "Gb4", solfege: "Fi 4", mp3File: "Fi 4 Bell.wav", wavFile: "Fi 4 Bell.wav", type: "black", style: "Gb4" },
+        { id: "G4",  solfege: "So 4", mp3File: "So 4 Bell.wav", wavFile: "So 4 Bell.wav", type: "white", style: "G4" },
+        { id: "Ab4", solfege: "Si 4", mp3File: "Si 4 Bell.wav", wavFile: "Si 4 Bell.wav", type: "black", style: "Ab4" },
+        { id: "A4",  solfege: "La 4", mp3File: "La 3 Bell.wav", wavFile: "La 4 Bell.wav", type: "white", style: "A4" },
+        { id: "Bb4", solfege: "Te 4", mp3File: "Te 3 Bell.wav", wavFile: "Te 4 Bell.wav", type: "black", style: "Bb4" },
+        { id: "B4",  solfege: "Ti 4", mp3File: "Ti 3 Bell.wav", wavFile: "Ti 4 Bell.wav", type: "white", style: "B4" },
+        { id: "C5",  solfege: "Do 5", mp3File: "Do 4 Bell.wav", wavFile: "Do 5 Bell.wav", type: "white", style: "C5" },
+        { id: "Db5", solfege: "Di 5", mp3File: "Di 4 Bell.wav", wavFile: "Di 5 Bell.wav", type: "black", style: "Db5" },
+        { id: "D5",  solfege: "Re 5", mp3File: "Re 4 Bell.wav", wavFile: "Re 5 Bell.wav", type: "white", style: "D5" },
+        { id: "Eb5", solfege: "Me 5", mp3File: "Me 4 Bell.wav", wavFile: "Me 5 Bell.wav", type: "black", style: "Eb5" },
+        { id: "E5",  solfege: "Mi 5", mp3File: "Mi 4 Bell.wav", wavFile: "Mi 5 Bell.wav", type: "white", style: "E5" },
+        { id: "F5",  solfege: "Fa 5", mp3File: "Fa 4 Bell.wav", wavFile: "F5 Bell.wav", type: "white", style: "F5" },
+        { id: "Gb5", solfege: "Fi 5", mp3File: "Fi 4 Bell.wav", wavFile: "Gb5 Bell.wav", type: "black", style: "Gb5" },
+        { id: "G5",  solfege: "So 5", mp3File: "So 4 Bell.wav", wavFile: "G5 Bell.wav", type: "white", style: "G5" }
+    ];
+    
+    let mp3Buffers = {}; 
+    let wavBuffers = {}; 
 
-         /* Piano layout spacing configurations for accidental positions */ 
-         #btn-Ab3  { grid-column: 1; margin-left: 38px; } 
-         #btn-Bb3  { grid-column: 2; margin-left: 38px; } 
-         #btn-Db4  { grid-column: 4; margin-left: 38px; } 
-         #btn-Eb4  { grid-column: 5; margin-left: 38px; } 
-         #btn-Gb4  { grid-column: 7; margin-left: 38px; } 
-         #btn-Ab4  { grid-column: 8; margin-left: 38px; } 
-         #btn-Bb4  { grid-column: 9; margin-left: 38px; } 
-         #btn-Db5  { grid-column: 11; margin-left: 38px; } 
-         #btn-Eb5  { grid-column: 12; margin-left: 38px; } 
-         #btn-Gb5  { grid-column: 14; margin-left: 38px; } 
+    const sharpsRow = document.getElementById('sharps-container');
+    const naturalsRow = document.getElementById('naturals-container');
 
-         /* Exact Original Tone Palette Mapped into the Inner Badges */ 
+    progression.forEach((note) => {
+        const btn = document.createElement('button');
+        btn.className = `bell-btn ${note.style}`;
+        btn.id = `btn-${note.id}`;
+        btn.setAttribute('onclick', `handleInput('${note.id}')`);
+        
+        btn.innerHTML = `<div class="color-badge">${note.solfege}</div>`;
 
-         .bell-btn.G3 .color-badge,  .bell-btn.G4 .color-badge,  
-.bell-btn.G5 .color-badge   { background: linear-gradient(to bottom, 
-#3a6d6b, #4d908e); }  
+        if (note.type === "black") {
+            sharpsRow.appendChild(btn);
+        } else {
+            naturalsRow.appendChild(btn);
+        }
+    });
 
-         .bell-btn.Ab3 .color-badge, .bell-btn.Ab4 .color-badge, 
-.bell-btn.Ab5 .color-badge  { background: linear-gradient(to bottom, 
-#1d5f7a, #277da1); }  
+    async function fetchAudioBuffer(url) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        const arrayBuffer = await response.arrayBuffer();
+        return await audioCtx.decodeAudioData(arrayBuffer);
+    }
 
-         .bell-btn.A3 .color-badge,  .bell-btn.A4 .color-badge            
-       { background: linear-gradient(to bottom, #513970, #6a4c93); }  
+    async function loadAllSounds() {
+        for (let note of progression) {
+            try {
+                if(note.wavFile) wavBuffers[note.id] = await fetchAudioBuffer(note.wavFile);
+            } catch (e) {
+                console.error(`Missing vocal file: ${note.wavFile}`, e);
+            }
 
-         .bell-btn.Bb3 .color-badge, .bell-btn.Bb4 .color-badge         
-        { background: linear-gradient(to bottom, #654e80, #8367a6); }  
+            try {
+                if(note.mp3File) mp3Buffers[note.id] = await fetchAudioBuffer(note.mp3File);
+            } catch (e) {
+                console.log(`Using smart fallback routing for note: ${note.id}`);
+            }
+        }
+        document.getElementById('msg').innerText = "Ready! Every single key is linked to a bell and voice now.";
+    }
+    loadAllSounds();
 
-         .bell-btn.B3 .color-badge,  .bell-btn.B4 .color-badge            
-       { background: linear-gradient(to bottom, #c4436e, #f35b8c); }  
+    function handleInput(choice) {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
 
-         .bell-btn.C4 .color-badge,  .bell-btn.C5 .color-badge            
-       { background: linear-gradient(to bottom, #ab1f1f, #d62828); }  
+        const now = audioCtx.currentTime;
 
-         .bell-btn.Db4 .color-badge, .bell-btn.Db5 .color-badge         
-        { background: linear-gradient(to bottom, #bd4931, #e65c40); }  
+        let bellBufferToPlay = mp3Buffers[choice];
+        let playbackRateValue = 1.0;
 
-         .bell-btn.D4 .color-badge,  .bell-btn.D5 .color-badge            
-       { background: linear-gradient(to bottom, #c75b20, #f3722c); }  
+        if (!bellBufferToPlay) {
+            const basePrefix = choice.replace(/[0-9]/g, ''); 
+            
+            if (choice.includes('5')) {
+                const fallbackId = `${basePrefix}4`;
+                if (mp3Buffers[fallbackId]) {
+                    bellBufferToPlay = mp3Buffers[fallbackId];
+                    playbackRateValue = 2.0; 
+                }
+            } else if (choice.includes('3')) {
+                const fallbackId = `${basePrefix}4`;
+                if (mp3Buffers[fallbackId]) {
+                    bellBufferToPlay = mp3Buffers[fallbackId];
+                    playbackRateValue = 0.5; 
+                }
+            }
+        }
 
-         .bell-btn.Eb4 .color-badge, .bell-btn.Eb5 .color-badge         
-        { background: linear-gradient(to bottom, #cca23c, #f9c74f); }  
+        // Play the matched or pitch-corrected Bell Sound instantly
+        if (bellBufferToPlay) {
+            const mp3Source = audioCtx.createBufferSource();
+            mp3Source.buffer = bellBufferToPlay;
+            mp3Source.playbackRate.value = playbackRateValue;
+            mp3Source.connect(audioCtx.destination);
+            mp3Source.start(now);
+        }
 
-         .bell-btn.E4 .color-badge,  .bell-btn.E5 .color-badge            
-       { background: linear-gradient(to bottom, #cca60f, #f9cd13); }  
-
-         .bell-btn.F4 .color-badge,  .bell-btn.F5 .color-badge            
-       { background: linear-gradient(to bottom, #729955, #90be6d); }  
-
-         .bell-btn.Gb4 .color-badge, .bell-btn.Gb5 .color-badge         
-        { background: linear-gradient(to bottom, #32826a, #43aa8b); }  
-     </style> 
- head> 
- <body> 
- <div class="container"> 
-     <h1>Zayne's Ear Training</h1> 
-     <div class="header-line"></div> 
-
-     <div class="game-panel"> 
-         <div class="selection-panel" id="pool-selector-zone"> 
-             <div class="selection-title">Toggle Active Practice Notes</div> 
-             <div class="pool-controls"> 
-                 <button class="pool-btn" onclick="setPoolPreset('all')">Select All</button> 
-                 <button class="pool-btn" onclick="setPoolPreset('naturals')">Naturals Only</button> 
-                 <button class="pool-btn" onclick="setPoolPreset('sharps')">Sharps Only</button> 
-             </div> 
-             <div class="checkbox-grid" id="checkbox-container"></div> 
-         </div> 
-
-         <div id="msg">Loading audio components... Please wait.</div> 
-
-         <div class="keyboard-wrapper"> 
-             <div class="piano-grid"> 
-                 <div class="sharps-layer" id="sharps-container"></div> 
-                 <div class="naturals-layer" id="naturals-container"></div> 
-             </div> 
-         </div> 
-     </div> 
- </div> 
-
- <script> 
-     const AudioContext = window.AudioContext || window.webkitAudioContext; 
-     const audioCtx = new AudioContext(); 
-      
-     const progression = [ 
-         { id: "G3",  solfege: "So 3", bellFile: "So 4 Bell.wav", vocalFile: "So 3.wav", type: "white", style: "G3" }, 
-         { id: "Ab3", solfege: "Si 3", bellFile: "Si 4 Bell.wav", vocalFile: "Si 3.wav", type: "black", style: "Ab3" }, 
-         { id: "A3",  solfege: "La 3", bellFile: "La 3 Bell.wav", vocalFile: "La 3.wav", type: "white", style: "A3" }, 
-         { id: "Bb3", solfege: "Te 3", bellFile: "Te 3 Bell.wav", vocalFile: "Te 3.wav", type: "black", style: "Bb3" }, 
-         { id: "B3",  solfege: "Ti 3", bellFile: "Ti 3 Bell.wav", vocalFile: "Ti 3.wav", type: "white", style: "B3" }, 
-         { id: "C4",  solfege: "Do 4", bellFile: "Do 4 Bell.wav", vocalFile: "Do 4.wav", type: "white", style: "C4" }, 
-         { id: "Db4", solfege: "Di 4", bellFile: "Di 4 Bell.wav", vocalFile: "Di 4.wav", type: "black", style: "Db4" }, 
-         { id: "D4",  solfege: "Re 4", bellFile: "Re 4 Bell.wav", vocalFile: "Re 4.wav", type: "white", style: "D4" }, 
-         { id: "Eb4", solfege: "Me 4", bellFile: "Me 4 Bell.wav", vocalFile: "Me 4.wav", type: "black", style: "Eb4" }, 
-         { id: "E4",  solfege: "Mi 4", bellFile: "Mi 4 Bell.wav", vocalFile: "Mi 4.wav", type: "white", style: "E4" }, 
-         { id: "F4",  solfege: "Fa 4", bellFile: "Fa 4 Bell.wav", vocalFile: "Fa 4.wav", type: "white", style: "F4" }, 
-         { id: "Gb4", solfege: "Fi 4", bellFile: "Fi 4 Bell.wav", vocalFile: "Fi 4.wav", type: "black", style: "Gb4" }, 
-         { id: "G4",  solfege: "So 4", bellFile: "So 4 Bell.wav", vocalFile: "So 4.wav", type: "white", style: "G4" }, 
-         { id: "Ab4", solfege: "Si 4", bellFile: "Si 4 Bell.wav", vocalFile: "Si 4.wav", type: "black", style: "Ab4" }, 
-         { id: "A4",  solfege: "La 4", bellFile: "La 3 Bell.wav", vocalFile: "La 4.wav", type: "white", style: "A4" }, 
-         { id: "Bb4", solfege: "Te 4", bellFile: "Te 3 Bell.wav", vocalFile: "Te 4.wav", type: "black", style: "Bb4" }, 
-         { id: "B4",  solfege: "Ti 4", bellFile: "Ti 3 Bell.wav", vocalFile: "Ti 4.wav", type: "white", style: "B4" }, 
-         { id: "C5",  solfege: "Do 5", bellFile: "Do 5 Bell.wav", vocalFile: "Do 5.wav", type: "white", style: "C5" }, 
-         { id: "Db5", solfege: "Di 5", bellFile: "Do 5 Bell.wav", vocalFile: "Di 5.wav", type: "black", style: "Db5" }, 
-         { id: "D5",  solfege: "Re 5", bellFile: "Do 5 Bell.wav", vocalFile: "Re 5.wav", type: "white", style: "D5" }, 
-         { id: "Eb5", solfege: "Me 5", bellFile: "Do 5 Bell.wav", vocalFile: "Me 5.wav", type: "black", style: "Eb5" }, 
-         { id: "E5",  solfege: "Mi 5", bellFile: "Do 5 Bell.wav", vocalFile: "Mi 5.wav", type: "white", style: "E5" }, 
-         { id: "F5",  solfege: "Fa 5", bellFile: "Do 5 Bell.wav", vocalFile: "Fa 5.wav", type: "white", style: "F5" }, 
-         { id: "Gb5", solfege: "Fi 5", bellFile: "Do 5 Bell.wav", vocalFile: "Fi 5.wav", type: "black", style: "Gb5" }, 
-         { id: "G5",  solfege: "So 5", bellFile: "Do 5 Bell.wav", vocalFile: "So 5.wav", type: "white", style: "G5" } 
-     ]; 
-      
-     let bellBuffers = {};  
-     let vocalBuffers = {};  
-
-     const sharpsRow = document.getElementById('sharps-container'); 
-     const naturalsRow = document.getElementById('naturals-container'); 
-     const checkboxGrid = document.getElementById('checkbox-container'); 
-
-     progression.forEach((note) => { 
-         const btn = document.createElement('button'); 
-         btn.className = `bell-btn ${note.style}`; 
-         btn.id = `btn-${note.id}`; 
-         btn.setAttribute('onclick', `handleInput('${note.id}')`); 
-          
-         btn.innerHTML = `<div class="color-badge">${note.solfege}</div>`; 
-
-         if (note.type === "black") { 
-             sharpsRow.appendChild(btn); 
-         } else { 
-             naturalsRow.appendChild(btn); 
-         } 
-
-         const label = document.createElement('label'); 
-         label.className = 'check-item'; 
-         label.innerHTML = ` 
-             <input type="checkbox" value="${note.id}" checked id="chk-${note.id}" onchange="syncPoolUI()"> 
-             <span>${note.solfege}</span> 
-         `; 
-         checkboxGrid.appendChild(label); 
-     }); 
-
-     async function fetchAudioBuffer(url) { 
-         const response = await fetch(url); 
-         if (!response.ok) throw new Error(`HTTP error ${response.status}`); 
-         const arrayBuffer = await response.arrayBuffer(); 
-         return await audioCtx.decodeAudioData(arrayBuffer); 
-     } 
-
-     async function loadAllSounds() { 
-         for (let note of progression) { 
-             try { 
-                 if(note.vocalFile) vocalBuffers[note.id] = await fetchAudioBuffer(encodeURIComponent(note.vocalFile)); 
-             } catch (e) { 
-                 console.error(`Missing vocal file: ${note.vocalFile}`, e); 
-             } 
-
-             try { 
-                 if(note.bellFile) bellBuffers[note.id] = await fetchAudioBuffer(encodeURIComponent(note.bellFile)); 
-             } catch (e) { 
-                 console.log(`Using smart fallback routing for note: ${note.id}`); 
-             } 
-         } 
-         document.getElementById('msg').innerText = "Ready! Every single key is linked to a bell and voice now."; 
-     } 
-     loadAllSounds(); 
-
-     function syncPoolUI() { 
-         progression.forEach(note => { 
-             const chk = document.getElementById(`chk-${note.id}`); 
-             const btn = document.getElementById(`btn-${note.id}`); 
-             btn.classList.toggle('dimmed', !chk.checked); 
-         }); 
-     } 
-
-     function setPoolPreset(type) { 
-         progression.forEach(note => { 
-             const chk = document.getElementById(`chk-${note.id}`); 
-             if (type === 'all') chk.checked = true; 
-             if (type === 'naturals') chk.checked = (note.type === 'white'); 
-             if (type === 'sharps') chk.checked = (note.type === 'black'); 
-         }); 
-         syncPoolUI(); 
-     } 
-
-     function handleInput(choice) { 
-         if (audioCtx.state === 'suspended') { 
-             audioCtx.resume(); 
-         } 
-
-         const now = audioCtx.currentTime; 
-
-         let bellBufferToPlay = bellBuffers[choice]; 
-         let playbackRateValue = 1.0; 
-
-         // Pitch adjustments for octaves without matching bell audio files
-         if (!bellBufferToPlay) { 
-             const basePrefix = choice.replace(/[0-9]/g, '');  
-              
-             if (choice.includes('5')) { 
-                 const fallbackId = `${basePrefix}4`; 
-                 if (bellBuffers[fallbackId]) { 
-                     bellBufferToPlay = bellBuffers[fallbackId]; 
-                     playbackRateValue = 2.0;  
-                 } 
-             } else if (choice.includes('3')) { 
-                 const fallbackId = `${basePrefix}4`; 
-                 if (bellBuffers[fallbackId]) { 
-                     bellBufferToPlay = bellBuffers[fallbackId]; 
-                     playbackRateValue = 0.5;  
-                 } 
-             } 
-         } 
-
-         // Play the matched or pitch-corrected Bell Sound instantly 
-         if (bellBufferToPlay) { 
-             const bellSource = audioCtx.createBufferSource(); 
-             bellSource.buffer = bellBufferToPlay; 
-             bellSource.playbackRate.value = playbackRateValue; 
-             bellSource.connect(audioCtx.destination); 
-             bellSource.start(now); 
-         } 
-
-         // Play the vocal file at the exact same moment (now) 
-         if (vocalBuffers[choice]) { 
-             const vocalSource = audioCtx.createBufferSource(); 
-             vocalSource.buffer = vocalBuffers[choice]; 
-             vocalSource.connect(audioCtx.destination); 
-             vocalSource.start(now); 
-         } 
-     } 
- </script> 
- </body> 
- </html>
+        // Play the vocal file at the exact same moment (now)
+        if (wavBuffers[choice]) {
+            const wavSource = audioCtx.createBufferSource();
+            wavSource.buffer = wavBuffers[choice];
+            wavSource.connect(audioCtx.destination);
+            wavSource.start(now);
+        }
+    }</script></body></html>
