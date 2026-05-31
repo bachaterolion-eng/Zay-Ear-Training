@@ -11,6 +11,7 @@
             --text-main: #ffffff;
             --text-sub: #94a3b8;
             --keyboard-bg: #0b0f19;
+            --accent: #38bdf8;
         }
 
         body {
@@ -25,9 +26,9 @@
 
         .container { width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; }
 
-        h1 { color: #38bdf8; font-size: 2.5rem; font-weight: 800; text-align: center; margin: 10px 0 5px 0; width: 100%; letter-spacing: 1px; }
+        h1 { color: var(--accent); font-size: 2.5rem; font-weight: 800; text-align: center; margin: 10px 0 5px 0; width: 100%; letter-spacing: 1px; }
 
-        .header-line { width: 80%; height: 2px; background: #38bdf8; margin-bottom: 25px; opacity: 0.5; }
+        .header-line { width: 80%; height: 2px; background: var(--accent); margin-bottom: 25px; opacity: 0.5; }
 
         .game-panel {
             background-color: var(--panel-bg);
@@ -40,6 +41,34 @@
         }
 
         #msg { font-weight: 600; color: #94a3b8; min-height: 1.5rem; text-align: center; margin-bottom: 20px; font-size: 1.1rem; }
+
+        /* Audio Mode Controls Panel */
+        .controls-panel {
+            display: flex;
+            background-color: var(--keyboard-bg);
+            padding: 6px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            border: 2px solid #1e293b;
+        }
+
+        .mode-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mode-btn.active {
+            background-color: var(--accent);
+            color: var(--keyboard-bg);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+        }
 
         .keyboard-wrapper {
             background-color: var(--keyboard-bg);
@@ -65,7 +94,7 @@
 
         .keyboard-wrapper::-webkit-scrollbar { height: 10px; }
         .keyboard-wrapper::-webkit-scrollbar-track { background: #0b0f19; border-radius: 10px; }
-        .keyboard-wrapper::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+        .keyboard-wrapper::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
         .keyboard-wrapper::-webkit-scrollbar-thumb:hover { background: #0ea5e9; }
 
         .piano-grid {
@@ -205,6 +234,12 @@
     <div class="game-panel">
         <div id="msg">Loading audio components... Please wait.</div>
 
+        <div class="controls-panel">
+            <button class="mode-btn active" id="mode-both" onclick="setAudioMode('both')">Both</button>
+            <button class="mode-btn" id="mode-vocal" onclick="setAudioMode('vocal')">Vocal Only</button>
+            <button class="mode-btn" id="mode-bell" onclick="setAudioMode('bell')">Bell Only</button>
+        </div>
+
         <div class="keyboard-wrapper">
             <div class="piano-grid">
                 <div class="sharps-layer" id="sharps-container"></div>
@@ -218,13 +253,14 @@
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
     
-    // Explicit 1-to-1 routing maps. Notice the "bellSourceFile" property tells us which physical file to read
-    // while the "bellRate" property shifts it to the correct octave mathematically.
+    // Current Global Audio Configuration State
+    let currentAudioMode = 'both'; // Can be 'both', 'vocal', or 'bell'
+
     const progression = [
         { id: "G3",  solfege: "So 3", voiceWav: "So 3.wav",  bellSourceFile: "So 3 Bell.wav",  bellRate: 1.0, type: "white", style: "G3" },
         { id: "Ab3", solfege: "Si 3", voiceWav: "Si 3.wav",  bellSourceFile: "Si 3 Bell.wav",  bellRate: 1.0, type: "black", style: "Ab3" },
         
-        // Octave 3 missing bells are generated here by dropping Octave 4 files down one octave (rate: 0.5)
+        // Octave 3 generated pitches dropped safely an octave lower (0.5) from local files
         { id: "A3",  solfege: "La 3", voiceWav: "La 3.wav",  bellSourceFile: "La 4 Bell.wav",  bellRate: 0.5, type: "white", style: "A3" },
         { id: "Bb3", solfege: "Te 3", voiceWav: "Te 3.wav",  bellSourceFile: "Te 4 Bell.wav",  bellRate: 0.5, type: "black", style: "Bb3" },
         { id: "B3",  solfege: "Ti 3", voiceWav: "Ti 3.wav",  bellSourceFile: "Ti 4 Bell.wav",  bellRate: 0.5, type: "white", style: "B3" },
@@ -243,7 +279,7 @@
         { id: "B4",  solfege: "Ti 4", voiceWav: "Ti 4.wav",  bellSourceFile: "Ti 4 Bell.wav",  bellRate: 1.0, type: "white", style: "B4" },
         { id: "C5",  solfege: "Do 5", voiceWav: "Do 5.wav",  bellSourceFile: "Do 5 Bell.wav",  bellRate: 1.0, type: "white", style: "C5" },
         
-        // Octave 5 missing bells are generated here by pitch shifting Octave 4 files up an octave (rate: 2.0)
+        // Octave 5 items generated cleanly up an octave higher (2.0) from local files
         { id: "Db5", solfege: "Di 5", voiceWav: "Di 5.wav",  bellSourceFile: "Di 4 Bell.wav",  bellRate: 2.0, type: "black", style: "Db5" },
         { id: "D5",  solfege: "Re 5", voiceWav: "Re 5.wav",  bellSourceFile: "Re 4 Bell.wav",  bellRate: 2.0, type: "white", style: "D5" },
         { id: "Eb5", solfege: "Me 5", voiceWav: "Me 5.wav",  bellSourceFile: "Me 4 Bell.wav",  bellRate: 2.0, type: "black", style: "Eb5" },
@@ -274,6 +310,16 @@
         }
     });
 
+    function setAudioMode(mode) {
+        currentAudioMode = mode;
+        
+        // UI Visual Update
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        if (mode === 'both') document.getElementById('mode-both').classList.add('active');
+        if (mode === 'vocal') document.getElementById('mode-vocal').classList.add('active');
+        if (mode === 'bell') document.getElementById('mode-bell').classList.add('active');
+    }
+
     async function fetchAudioBuffer(url) {
         const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP error ${response.status}`);
@@ -282,7 +328,6 @@
     }
 
     async function loadAllSounds() {
-        // Cache loaded files to avoid fetching the duplicate sources multiple times
         let cache = {};
 
         for (let note of progression) {
@@ -293,7 +338,7 @@
                 console.error(`Missing vocal file: ${note.voiceWav}`, e);
             }
 
-            // Load Bell File (utilizing cache for duplicates)
+            // Load Bell File
             try {
                 if(note.bellSourceFile) {
                     if (!cache[note.bellSourceFile]) {
@@ -305,7 +350,7 @@
                 console.error(`Missing bell file: ${note.bellSourceFile}`, e);
             }
         }
-        document.getElementById('msg').innerText = "Ready! Every single key is linked to a bell and voice now.";
+        document.getElementById('msg').innerText = "Ready! Tracks loaded successfully.";
     }
     loadAllSounds();
 
@@ -317,17 +362,17 @@
         const now = audioCtx.currentTime;
         const matchingNote = progression.find(n => n.id === choice);
 
-        // Play Bell Sound Instantly with custom playback rates to target perfect octaves
-        if (bellBuffers[choice] && matchingNote) {
+        // Play Bell Track
+        if ((currentAudioMode === 'both' || currentAudioMode === 'bell') && bellBuffers[choice] && matchingNote) {
             const bellSource = audioCtx.createBufferSource();
             bellSource.buffer = bellBuffers[choice];
-            bellSource.playbackRate.value = matchingNote.bellRate; // Shifts pitch cleanly up or down an octave
+            bellSource.playbackRate.value = matchingNote.bellRate;
             bellSource.connect(audioCtx.destination);
             bellSource.start(now);
         }
 
-        // Play Vocal Sound at the exact same moment
-        if (voiceBuffers[choice]) {
+        // Play Vocal Track
+        if ((currentAudioMode === 'both' || currentAudioMode === 'vocal') && voiceBuffers[choice]) {
             const voiceSource = audioCtx.createBufferSource();
             voiceSource.buffer = voiceBuffers[choice];
             voiceSource.connect(audioCtx.destination);
