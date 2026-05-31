@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zayne's Ear Training</title>
+    <title>Zayne's Ear Training - Debug Mode</title>
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -42,7 +42,23 @@
 
         #msg { font-weight: 600; color: #94a3b8; min-height: 1.5rem; text-align: center; margin-bottom: 20px; font-size: 1.1rem; }
 
-        /* Audio Mode Controls Panel */
+        /* Debug Logger Panel */
+        #debug-log {
+            width: 100%;
+            background: #000;
+            color: #10b981;
+            font-family: monospace;
+            font-size: 0.85rem;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #334155;
+            text-align: left;
+        }
+        .err-log { color: #ef4444 !important; }
+
         .controls-panel {
             display: flex;
             background-color: var(--keyboard-bg);
@@ -83,19 +99,6 @@
             border: 4px solid #1e293b;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
-
-        @media screen and (orientation: landscape) {
-            .keyboard-wrapper {
-                max-width: 100%; 
-                display: flex;
-                justify-content: center;
-            }
-        }
-
-        .keyboard-wrapper::-webkit-scrollbar { height: 10px; }
-        .keyboard-wrapper::-webkit-scrollbar-track { background: #0b0f19; border-radius: 10px; }
-        .keyboard-wrapper::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-        .keyboard-wrapper::-webkit-scrollbar-thumb:hover { background: #0ea5e9; }
 
         .piano-grid {
             position: relative;
@@ -139,7 +142,6 @@
             padding-bottom: 15px;
         }
         
-        /* Traditional White Keys Styling */
         .naturals-layer .bell-btn {
             height: 232px;
             background: linear-gradient(to bottom, #eeeeee 0%, #ffffff 100%);
@@ -148,7 +150,6 @@
             border-bottom: 4px solid #cccccc;
         }
 
-        /* Traditional Black Keys Styling */
         .sharps-layer .bell-btn {
             height: 145px;
             width: 38px;
@@ -159,22 +160,7 @@
             border-bottom: 5px solid #000000;
             padding-bottom: 10px;
         }
-
-        .naturals-layer .bell-btn:active { 
-            transform: translateY(2px);
-            border-bottom-width: 1px;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
-            background: #f5f5f5;
-        }
-
-        .sharps-layer .bell-btn:active {
-            transform: translateY(2px);
-            border-bottom-width: 2px;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            background: #222222;
-        }
         
-        /* Centered Colored Solfege Square Badge */
         .color-badge {
             width: 44px;
             height: 44px;
@@ -191,15 +177,8 @@
             margin: 0 auto;
         }
 
-        /* Slightly smaller square badge for the black keys */
-        .sharps-layer .color-badge {
-            width: 32px;
-            height: 32px;
-            font-size: 0.65rem;
-            border-radius: 6px;
-        }
+        .sharps-layer .color-badge { width: 32px; height: 32px; font-size: 0.65rem; border-radius: 6px; }
 
-        /* Piano layout spacing configurations for accidental positions */
         #btn-Ab3  { grid-column: 1; margin-left: 38px; }
         #btn-Bb3  { grid-column: 2; margin-left: 38px; }
         #btn-Db4  { grid-column: 4; margin-left: 38px; }
@@ -211,7 +190,6 @@
         #btn-Eb5  { grid-column: 12; margin-left: 38px; }
         #btn-Gb5  { grid-column: 14; margin-left: 38px; }
 
-        /* Exact Original Tone Palette Mapped into the Inner Badges */
         .bell-btn.G3 .color-badge,  .bell-btn.G4 .color-badge,  .bell-btn.G5 .color-badge   { background: linear-gradient(to bottom, #3a6d6b, #4d908e); } 
         .bell-btn.Ab3 .color-badge, .bell-btn.Ab4 .color-badge, .bell-btn.Ab5 .color-badge  { background: linear-gradient(to bottom, #1d5f7a, #277da1); } 
         .bell-btn.A3 .color-badge,  .bell-btn.A4 .color-badge                               { background: linear-gradient(to bottom, #513970, #6a4c93); } 
@@ -232,7 +210,9 @@
     <div class="header-line"></div>
 
     <div class="game-panel">
-        <div id="msg">Loading audio components... Please wait.</div>
+        <div id="msg">Loading files...</div>
+        
+        <div id="debug-log">System activity tracker initialized...<br></div>
 
         <div class="controls-panel">
             <button class="mode-btn active" id="mode-both" onclick="setAudioMode('both')">Both</button>
@@ -253,18 +233,23 @@
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
     
-    // Current Global Audio Configuration State
-    let currentAudioMode = 'both'; // Can be 'both', 'vocal', or 'bell'
+    let currentAudioMode = 'both';
+    const logEl = document.getElementById('debug-log');
+
+    function debugLog(text, isError = false) {
+        const span = document.createElement('div');
+        if(isError) span.className = 'err-log';
+        span.innerHTML = text;
+        logEl.appendChild(span);
+        logEl.scrollTop = logEl.scrollHeight;
+    }
 
     const progression = [
         { id: "G3",  solfege: "So 3", voiceWav: "So 3.wav",  bellSourceFile: "So 3 Bell.wav",  bellRate: 1.0, type: "white", style: "G3" },
         { id: "Ab3", solfege: "Si 3", voiceWav: "Si 3.wav",  bellSourceFile: "Si 3 Bell.wav",  bellRate: 1.0, type: "black", style: "Ab3" },
-        
-        // Octave 3 generated pitches dropped safely an octave lower (0.5) from local files
-        { id: "A3",  solfege: "La 3", voiceWav: "La 3.wav",  bellSourceFile: "La 4 Bell.wav",  bellRate: 0.5, type: "white", style: "A3" },
-        { id: "Bb3", solfege: "Te 3", voiceWav: "Te 3.wav",  bellSourceFile: "Te 4 Bell.wav",  bellRate: 0.5, type: "black", style: "Bb3" },
-        { id: "B3",  solfege: "Ti 3", voiceWav: "Ti 3.wav",  bellSourceFile: "Ti 4 Bell.wav",  bellRate: 0.5, type: "white", style: "B3" },
-        
+        { id: "A3",  solfege: "La 3", voiceWav: "La 3.wav",  bellSourceFile: "La4 Bell.wav",   bellRate: 0.5, type: "white", style: "A3" },
+        { id: "Bb3", solfege: "Te 3", voiceWav: "Te 3.wav",  bellSourceFile: "Te4 Bell.wav",   bellRate: 0.5, type: "black", style: "Bb3" },
+        { id: "B3",  solfege: "Ti 3", voiceWav: "Ti 3.wav",  bellSourceFile: "Ti4 Bell.wav",   bellRate: 0.5, type: "white", style: "B3" },
         { id: "C4",  solfege: "Do 4", voiceWav: "Do 4.wav",  bellSourceFile: "Do 4 Bell.wav",  bellRate: 1.0, type: "white", style: "C4" },
         { id: "Db4", solfege: "Di 4", voiceWav: "Di 4.wav",  bellSourceFile: "Di 4 Bell.wav",  bellRate: 1.0, type: "black", style: "Db4" },
         { id: "D4",  solfege: "Re 4", voiceWav: "Re 4.wav",  bellSourceFile: "Re 4 Bell.wav",  bellRate: 1.0, type: "white", style: "D4" },
@@ -274,12 +259,10 @@
         { id: "Gb4", solfege: "Fi 4", voiceWav: "Fi 4.wav",  bellSourceFile: "Fi 4 Bell.wav",  bellRate: 1.0, type: "black", style: "Gb4" },
         { id: "G4",  solfege: "So 4", voiceWav: "So 4.wav",  bellSourceFile: "So 4 Bell.wav",  bellRate: 1.0, type: "white", style: "G4" },
         { id: "Ab4", solfege: "Si 4", voiceWav: "Si 4.wav",  bellSourceFile: "Si 4 Bell.wav",  bellRate: 1.0, type: "black", style: "Ab4" },
-        { id: "A4",  solfege: "La 4", voiceWav: "La 4.wav",  bellSourceFile: "La 4 Bell.wav",  bellRate: 1.0, type: "white", style: "A4" },
-        { id: "Bb4", solfege: "Te 4", voiceWav: "Te 4.wav",  bellSourceFile: "Te 4 Bell.wav",  bellRate: 1.0, type: "black", style: "Bb4" },
-        { id: "B4",  solfege: "Ti 4", voiceWav: "Ti 4.wav",  bellSourceFile: "Ti 4 Bell.wav",  bellRate: 1.0, type: "white", style: "B4" },
+        { id: "A4",  solfege: "La 4", voiceWav: "La 4.wav",  bellSourceFile: "La4 Bell.wav",   bellRate: 1.0, type: "white", style: "A4" },
+        { id: "Bb4", solfege: "Te 4", voiceWav: "Te 4.wav",  bellSourceFile: "Te4 Bell.wav",   bellRate: 1.0, type: "black", style: "Bb4" },
+        { id: "B4",  solfege: "Ti 4", voiceWav: "Ti 4.wav",  bellSourceFile: "Ti4 Bell.wav",   bellRate: 1.0, type: "white", style: "B4" },
         { id: "C5",  solfege: "Do 5", voiceWav: "Do 5.wav",  bellSourceFile: "Do 5 Bell.wav",  bellRate: 1.0, type: "white", style: "C5" },
-        
-        // Octave 5 items generated cleanly up an octave higher (2.0) from local files
         { id: "Db5", solfege: "Di 5", voiceWav: "Di 5.wav",  bellSourceFile: "Di 4 Bell.wav",  bellRate: 2.0, type: "black", style: "Db5" },
         { id: "D5",  solfege: "Re 5", voiceWav: "Re 5.wav",  bellSourceFile: "Re 4 Bell.wav",  bellRate: 2.0, type: "white", style: "D5" },
         { id: "Eb5", solfege: "Me 5", voiceWav: "Me 5.wav",  bellSourceFile: "Me 4 Bell.wav",  bellRate: 2.0, type: "black", style: "Eb5" },
@@ -300,45 +283,36 @@
         btn.className = `bell-btn ${note.style}`;
         btn.id = `btn-${note.id}`;
         btn.setAttribute('onclick', `handleInput('${note.id}')`);
-        
         btn.innerHTML = `<div class="color-badge">${note.solfege}</div>`;
-
-        if (note.type === "black") {
-            sharpsRow.appendChild(btn);
-        } else {
-            naturalsRow.appendChild(btn);
-        }
+        if (note.type === "black") sharpsRow.appendChild(btn);
+        else naturalsRow.appendChild(btn);
     });
 
     function setAudioMode(mode) {
         currentAudioMode = mode;
-        
-        // UI Visual Update
         document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-        if (mode === 'both') document.getElementById('mode-both').classList.add('active');
-        if (mode === 'vocal') document.getElementById('mode-vocal').classList.add('active');
-        if (mode === 'bell') document.getElementById('mode-bell').classList.add('active');
+        document.getElementById(`mode-${mode}`).classList.add('active');
+        debugLog(`Audio Mode changed to: <b>${mode.toUpperCase()}</b>`);
     }
 
     async function fetchAudioBuffer(url) {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        if (!response.ok) throw new Error(`Status ${response.status}`);
         const arrayBuffer = await response.arrayBuffer();
         return await audioCtx.decodeAudioData(arrayBuffer);
     }
 
     async function loadAllSounds() {
         let cache = {};
+        debugLog("Starting background sync with GitHub storage...");
 
         for (let note of progression) {
-            // Load Vocal File
             try {
                 if(note.voiceWav) voiceBuffers[note.id] = await fetchAudioBuffer(note.voiceWav);
             } catch (e) {
-                console.error(`Missing vocal file: ${note.voiceWav}`, e);
+                debugLog(`⚠️ Missing vocal asset: "${note.voiceWav}"`, true);
             }
 
-            // Load Bell File
             try {
                 if(note.bellSourceFile) {
                     if (!cache[note.bellSourceFile]) {
@@ -347,22 +321,19 @@
                     bellBuffers[note.id] = cache[note.bellSourceFile];
                 }
             } catch (e) {
-                console.error(`Missing bell file: ${note.bellSourceFile}`, e);
+                debugLog(`❌ Missing bell asset: "${note.bellSourceFile}"`, true);
             }
         }
-        document.getElementById('msg').innerText = "Ready! Tracks loaded successfully.";
+        document.getElementById('msg').innerText = "Load cycle complete.";
+        debugLog("<b>Sync finished. If any file above printed red, it means the spelling doesn't match GitHub exactly!</b>");
     }
     loadAllSounds();
 
     function handleInput(choice) {
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         const now = audioCtx.currentTime;
         const matchingNote = progression.find(n => n.id === choice);
 
-        // Play Bell Track
         if ((currentAudioMode === 'both' || currentAudioMode === 'bell') && bellBuffers[choice] && matchingNote) {
             const bellSource = audioCtx.createBufferSource();
             bellSource.buffer = bellBuffers[choice];
@@ -371,7 +342,6 @@
             bellSource.start(now);
         }
 
-        // Play Vocal Track
         if ((currentAudioMode === 'both' || currentAudioMode === 'vocal') && voiceBuffers[choice]) {
             const voiceSource = audioCtx.createBufferSource();
             voiceSource.buffer = voiceBuffers[choice];
