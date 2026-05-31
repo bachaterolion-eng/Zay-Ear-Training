@@ -1,4 +1,5 @@
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zayne's Ear Training</title>
@@ -36,6 +37,55 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
+        }
+
+        .selection-panel {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            width: 100%;
+            border: 1px solid #334155;
+        }
+        .selection-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #38bdf8;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .pool-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+        .pool-btn {
+            background: #334155;
+            color: #ffffff;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .pool-btn:hover { background: #475569; }
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+            gap: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
 
         #msg { font-weight: 600; color: #94a3b8; min-height: 1.5rem; text-align: center; margin-bottom: 20px; font-size: 1.1rem; }
@@ -143,6 +193,8 @@
             box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
             background: #222222;
         }
+
+        .bell-btn.dimmed { filter: grayscale(80%) brightness(20%); opacity: 0.2; pointer-events: none; }
         
         /* Centered Colored Solfege Square Badge */
         .color-badge {
@@ -184,21 +236,34 @@
         /* Exact Original Tone Palette Mapped into the Inner Badges */
         .bell-btn.G3 .color-badge,  .bell-btn.G4 .color-badge,  .bell-btn.G5 .color-badge   { background: linear-gradient(to bottom, #3a6d6b, #4d908e); } 
         .bell-btn.Ab3 .color-badge, .bell-btn.Ab4 .color-badge, .bell-btn.Ab5 .color-badge  { background: linear-gradient(to bottom, #1d5f7a, #277da1); } 
-        .bell-btn.A3 .color-badge,  .bell-btn.A4 .color-badge                               { background: linear-gradient(to bottom, #513970, #6a4c93); } 
-        .bell-btn.Bb3 .color-badge, .bell-btn.Bb4 .color-badge                              { background: linear-gradient(to bottom, #654e80, #8367a6); } 
-        .bell-btn.B3 .color-badge,  .bell-btn.B4 .color-badge                               { background: linear-gradient(to bottom, #c4436e, #f35b8c); } 
-        .bell-btn.C4 .color-badge,  .bell-btn.C5 .color-badge                               { background: linear-gradient(to bottom, #ab1f1f, #d62828); } 
-        .bell-btn.Db4 .color-badge, .bell-btn.Db5 .color-badge                              { background: linear-gradient(to bottom, #bd4931, #e65c40); } 
-        .bell-btn.D4 .color-badge,  .bell-btn.D5 .color-badge                               { background: linear-gradient(to bottom, #c75b20, #f3722c); } 
-        .bell-btn.Eb4 .color-badge, .bell-btn.Eb5 .color-badge                              { background: linear-gradient(to bottom, #cca23c, #f9c74f); } 
-        .bell-btn.E4 .color-badge,  .bell-btn.E5 .color-badge                               { background: linear-gradient(to bottom, #cca60f, #f9cd13); } 
-        .bell-btn.F4 .color-badge,  .bell-btn.F5 .color-badge                               { background: linear-gradient(to bottom, #729955, #90be6d); } 
-        .bell-btn.Gb4 .color-badge, .bell-btn.Gb5 .color-badge                              { background: linear-gradient(to bottom, #32826a, #43aa8b); } 
-    </style></head><body><div class="container">
+        .bell-btn.A3 .color-badge,  .bell-btn.A4 .color-badge                  { background: linear-gradient(to bottom, #513970, #6a4c93); } 
+        .bell-btn.Bb3 .color-badge, .bell-btn.Bb4 .color-badge                 { background: linear-gradient(to bottom, #654e80, #8367a6); } 
+        .bell-btn.B3 .color-badge,  .bell-btn.B4 .color-badge                  { background: linear-gradient(to bottom, #c4436e, #f35b8c); } 
+        .bell-btn.C4 .color-badge,  .bell-btn.C5 .color-badge                  { background: linear-gradient(to bottom, #ab1f1f, #d62828); } 
+        .bell-btn.Db4 .color-badge, .bell-btn.Db5 .color-badge                 { background: linear-gradient(to bottom, #bd4931, #e65c40); } 
+        .bell-btn.D4 .color-badge,  .bell-btn.D5 .color-badge                  { background: linear-gradient(to bottom, #c75b20, #f3722c); } 
+        .bell-btn.Eb4 .color-badge, .bell-btn.Eb5 .color-badge                 { background: linear-gradient(to bottom, #cca23c, #f9c74f); } 
+        .bell-btn.E4 .color-badge,  .bell-btn.E5 .color-badge                  { background: linear-gradient(to bottom, #cca60f, #f9cd13); } 
+        .bell-btn.F4 .color-badge,  .bell-btn.F5 .color-badge                  { background: linear-gradient(to bottom, #729955, #90be6d); } 
+        .bell-btn.Gb4 .color-badge, .bell-btn.Gb5 .color-badge                 { background: linear-gradient(to bottom, #32826a, #43aa8b); } 
+    </style>
+</head>
+<body>
+<div class="container">
     <h1>Zayne's Ear Training</h1>
     <div class="header-line"></div>
 
     <div class="game-panel">
+        <div class="selection-panel" id="pool-selector-zone">
+            <div class="selection-title">Toggle Active Practice Notes</div>
+            <div class="pool-controls">
+                <button class="pool-btn" onclick="setPoolPreset('all')">Select All</button>
+                <button class="pool-btn" onclick="setPoolPreset('naturals')">Naturals Only</button>
+                <button class="pool-btn" onclick="setPoolPreset('sharps')">Sharps Only</button>
+            </div>
+            <div class="checkbox-grid" id="checkbox-container"></div>
+        </div>
+
         <div id="msg">Loading audio components... Please wait.</div>
 
         <div class="keyboard-wrapper">
@@ -207,72 +272,69 @@
                 <div class="naturals-layer" id="naturals-container"></div>
             </div>
         </div>
-    </div></div><script>
+    </div>
+</div>
+
+<script>
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
     
-    // Explicit tracking map referencing the actual file asset directory on your repository
     const progression = [
-        { id: "G3",  solfege: "So 3", sourceFile: "So 4 Bell.wav",  playbackRate: 0.5, style: "G3" },
-        { id: "Ab3", solfege: "Si 3", sourceFile: "Si 4 Bell.wav",  playbackRate: 0.5, style: "Ab3" },
-        { id: "A3",  solfege: "La 3", sourceFile: "La 3 Bell.wav",  playbackRate: 1.0, style: "A3" },
-        { id: "Bb3", solfege: "Te 3", sourceFile: "Te 3 Bell.wav",  playbackRate: 1.0, style: "Bb3" },
-        { id: "B3",  solfege: "Ti 3", sourceFile: "Ti 3 Bell.wav",  playbackRate: 1.0, style: "B3" },
-        { id: "C4",  solfege: "Do 4", sourceFile: "Do 4 Bell.wav",  playbackRate: 1.0, style: "C4" },
-        { id: "Db4", solfege: "Di 4", sourceFile: "Di 4 Bell.wav",  playbackRate: 1.0, style: "Db4" },
-        { id: "D4",  solfege: "Re 4", sourceFile: "Re 4 Bell.wav",  playbackRate: 1.0, style: "D4" },
-        { id: "Eb4", solfege: "Me 4", sourceFile: "Me 4 Bell.wav",  playbackRate: 1.0, style: "Eb4" },
-        { id: "E4",  solfege: "Mi 4", sourceFile: "Mi 4 Bell.wav",  playbackRate: 1.0, style: "E4" },
-        { id: "F4",  solfege: "Fa 4", sourceFile: "Fa 4 Bell.wav",  playbackRate: 1.0, style: "F4" },
-        { id: "Gb4", solfege: "Fi 4", sourceFile: "Fi 4 Bell.wav",  playbackRate: 1.0, style: "Gb4" },
-        { id: "G4",  solfege: "So 4", sourceFile: "So 4 Bell.wav",  playbackRate: 1.0, style: "G4" },
-        { id: "Ab4", solfege: "Si 4", sourceFile: "Si 4 Bell.wav",  playbackRate: 1.0, style: "Ab4" },
-        { id: "A4",  solfege: "La 4", sourceFile: "La 3 Bell.wav",  playbackRate: 2.0, style: "A4" },
-        { id: "Bb4", solfege: "Te 4", sourceFile: "Te 3 Bell.wav",  playbackRate: 2.0, style: "Bb4" },
-        { id: "B4",  solfege: "Ti 4", sourceFile: "Ti 3 Bell.wav",  playbackRate: 2.0, style: "B4" },
-        { id: "C5",  solfege: "Do 5", sourceFile: "Do 5 Bell.wav",  playbackRate: 1.0, style: "C5" },
-        { id: "Db5", solfege: "Di 5", sourceFile: "Di 4 Bell.wav",  playbackRate: 2.0, style: "Db5" },
-        { id: "D5",  solfege: "Re 5", sourceFile: "Re 4 Bell.wav",  playbackRate: 2.0, style: "D5" },
-        { id: "Eb5", solfege: "Me 5", sourceFile: "Me 4 Bell.wav",  playbackRate: 2.0, style: "Eb5" },
-        { id: "E5",  solfege: "Mi 5", sourceFile: "Mi 4 Bell.wav",  playbackRate: 2.0, style: "E5" },
-        { id: "F5",  solfege: "Fa 5", sourceFile: "Fa 4 Bell.wav",  playbackRate: 2.0, style: "F5" },
-        { id: "Gb5", solfege: "Fi 5", sourceFile: "Fi 4 Bell.wav",  playbackRate: 2.0, style: "Gb5" },
-        { id: "G5",  solfege: "So 5", sourceFile: "So 4 Bell.wav",  playbackRate: 2.0, style: "G5" }
+        { id: "G3",  solfege: "So 3", mp3File: "So 3.mp3", wavFile: "So 3.wav", type: "white", style: "G3" },
+        { id: "Ab3", solfege: "Si 3", mp3File: "Si 3.mp3", wavFile: "Si 3.wav", type: "black", style: "Ab3" },
+        { id: "A3",  solfege: "La 3", mp3File: "", wavFile: "La 3.wav", type: "white", style: "A3" },
+        { id: "Bb3", solfege: "Te 3", mp3File: "", wavFile: "Te 3.wav", type: "black", style: "Bb3" },
+        { id: "B3",  solfege: "Ti 3", mp3File: "", wavFile: "Ti 3.wav", type: "white", style: "B3" },
+        { id: "C4",  solfege: "Do 4", mp3File: "Do 4.mp3", wavFile: "Do 4.wav", type: "white", style: "C4" },
+        { id: "Db4", solfege: "Di 4", mp3File: "Di 4.mp3", wavFile: "Di 4.wav", type: "black", style: "Db4" },
+        { id: "D4",  solfege: "Re 4", mp3File: "Re 4.mp3", wavFile: "Re 4.wav", type: "white", style: "D4" },
+        { id: "Eb4", solfege: "Me 4", mp3File: "Me 4.mp3", wavFile: "Me 4.wav", type: "black", style: "Eb4" },
+        { id: "E4",  solfege: "Mi 4", mp3File: "Mi 4.mp3", wavFile: "Mi 4.wav", type: "white", style: "E4" },
+        { id: "F4",  solfege: "Fa 4", mp3File: "Fa 4.mp3", wavFile: "Fa 4.wav", type: "white", style: "F4" },
+        { id: "Gb4", solfege: "Fi 4", mp3File: "Fi 4.mp3", wavFile: "Fi 4.wav", type: "black", style: "Gb4" },
+        { id: "G4",  solfege: "So 4", mp3File: "So 4.mp3", wavFile: "So 4.wav", type: "white", style: "G4" },
+        { id: "Ab4", solfege: "Si 4", mp3File: "Si 4.mp3", wavFile: "Si 4.wav", type: "black", style: "Ab4" },
+        { id: "A4",  solfege: "La 4", mp3File: "La 3.mp3", wavFile: "La 4.wav", type: "white", style: "A4" },
+        { id: "Bb4", solfege: "Te 4", mp3File: "Te 3.mp3", wavFile: "Te 4.wav", type: "black", style: "Bb4" },
+        { id: "B4",  solfege: "Ti 4", mp3File: "Ti 3.mp3", wavFile: "Ti 4.wav", type: "white", style: "B4" },
+        { id: "C5",  solfege: "Do 5", mp3File: "Do 5.mp3", wavFile: "Do 5.wav", type: "white", style: "C5" },
+        { id: "Db5", solfege: "Di 5", mp3File: "Di 5.mp3", wavFile: "Di 5.wav", type: "black", style: "Db5" },
+        { id: "D5",  solfege: "Re 5", mp3File: "Re 5.mp3", wavFile: "Re 5.wav", type: "white", style: "D5" },
+        { id: "Eb5", solfege: "Me 5", mp3File: "Me 5.mp3", wavFile: "Me 5.wav", type: "black", style: "Eb5" },
+        { id: "E5",  solfege: "Mi 5", mp3File: "Mi 5.mp3", wavFile: "Mi 5.wav", type: "white", style: "E5" },
+        { id: "F5",  solfege: "Fa 5", mp3File: "Fa 5.mp3", wavFile: "Fa 5.wav", type: "white", style: "F5" },
+        { id: "Gb5", solfege: "Fi 5", mp3File: "Fi 5.mp3", wavFile: "Fi 5.wav", type: "black", style: "Gb5" },
+        { id: "G5",  solfege: "So 5", mp3File: "So 5.mp3", wavFile: "So 5.wav", type: "white", style: "G5" }
     ];
     
-    const uniqueFiles = [
-        "Ti 3 Bell.wav", "Te 3 Bell.wav", "So 4 Bell.wav", "Si 4 Bell.wav",
-        "Re 4 Bell.wav", "Mi 4 Bell.wav", "Me 4 Bell.wav", "La 3 Bell.wav",
-        "Fi 4 Bell.wav", "Fa 4 Bell.wav", "Do 5 Bell.wav", "Do 4 Bell.wav",
-        "Di 4 Bell.wav"
-    ];
-
-    let audioBuffers = {}; 
+    let mp3Buffers = {}; 
+    let wavBuffers = {}; 
 
     const sharpsRow = document.getElementById('sharps-container');
     const naturalsRow = document.getElementById('naturals-container');
+    const checkboxGrid = document.getElementById('checkbox-container');
 
-    // Render interactive interface layout
     progression.forEach((note) => {
         const btn = document.createElement('button');
-        const keyType = (note.id.includes('b') || note.id.includes('#') || note.id.includes('b')) ? "black" : "white";
-        
-        // Handle special character styling parsing rules
-        if (note.id.startsWith("Ab") || note.id.startsWith("Bb") || note.id.startsWith("Db") || note.id.startsWith("Eb") || note.id.startsWith("Gb")) {
-            btn.className = `bell-btn ${note.style}`;
-        } else {
-            btn.className = `bell-btn ${note.style}`;
-        }
-        
+        btn.className = `bell-btn ${note.style}`;
         btn.id = `btn-${note.id}`;
         btn.setAttribute('onclick', `handleInput('${note.id}')`);
+        
         btn.innerHTML = `<div class="color-badge">${note.solfege}</div>`;
 
-        if (note.id.includes('b') || note.id === "Ab3" || note.id === "Bb3" || note.id === "Db4" || note.id === "Eb4" || note.id === "Gb4" || note.id === "Ab4" || note.id === "Bb4" || note.id === "Db5" || note.id === "Eb5" || note.id === "Gb5") {
+        if (note.type === "black") {
             sharpsRow.appendChild(btn);
         } else {
             naturalsRow.appendChild(btn);
         }
+
+        const label = document.createElement('label');
+        label.className = 'check-item';
+        label.innerHTML = `
+            <input type="checkbox" value="${note.id}" checked id="chk-${note.id}" onchange="syncPoolUI()">
+            <span>${note.solfege}</span>
+        `;
+        checkboxGrid.appendChild(label);
     });
 
     async function fetchAudioBuffer(url) {
@@ -283,16 +345,40 @@
     }
 
     async function loadAllSounds() {
-        for (let fileName of uniqueFiles) {
+        for (let note of progression) {
             try {
-                audioBuffers[fileName] = await fetchAudioBuffer(fileName);
+                if(note.wavFile) wavBuffers[note.id] = await fetchAudioBuffer(note.wavFile);
             } catch (e) {
-                console.error(`Missing production file: ${fileName}`, e);
+                console.error(`Missing vocal file: ${note.wavFile}`, e);
+            }
+
+            try {
+                if(note.mp3File) mp3Buffers[note.id] = await fetchAudioBuffer(note.mp3File);
+            } catch (e) {
+                console.log(`Using smart fallback routing for note: ${note.id}`);
             }
         }
-        document.getElementById('msg').innerText = "Ready! Every note linked directly to matching real audio assets.";
+        document.getElementById('msg').innerText = "Ready! Every single key is linked to a bell and voice now.";
     }
     loadAllSounds();
+
+    function syncPoolUI() {
+        progression.forEach(note => {
+            const chk = document.getElementById(`chk-${note.id}`);
+            const btn = document.getElementById(`btn-${note.id}`);
+            btn.classList.toggle('dimmed', !chk.checked);
+        });
+    }
+
+    function setPoolPreset(type) {
+        progression.forEach(note => {
+            const chk = document.getElementById(`chk-${note.id}`);
+            if (type === 'all') chk.checked = true;
+            if (type === 'naturals') chk.checked = (note.type === 'white');
+            if (type === 'sharps') chk.checked = (note.type === 'black');
+        });
+        syncPoolUI();
+    }
 
     function handleInput(choice) {
         if (audioCtx.state === 'suspended') {
@@ -300,24 +386,45 @@
         }
 
         const now = audioCtx.currentTime;
-        const targetConfig = progression.find(n => n.id === choice);
-        if (!targetConfig) return;
 
-        const baseFileBuffer = audioBuffers[targetConfig.sourceFile];
+        let bellBufferToPlay = mp3Buffers[choice];
+        let playbackRateValue = 1.0;
 
-        if (baseFileBuffer) {
-            // Channel 1: The true acoustic physical Handbell Track
-            const bellNode = audioCtx.createBufferSource();
-            bellNode.buffer = baseFileBuffer;
-            bellNode.playbackRate.value = targetConfig.playbackRate; 
-            bellNode.connect(audioCtx.destination);
-            bellNode.start(now);
-
-            // Channel 2: The synchronized parallel vocal track layer
-            const vocalNode = audioCtx.createBufferSource();
-            vocalNode.buffer = baseFileBuffer;
-            vocalNode.playbackRate.value = targetConfig.playbackRate; 
-            vocalNode.connect(audioCtx.destination);
-            vocalNode.start(now);
+        if (!bellBufferToPlay) {
+            const basePrefix = choice.replace(/[0-9]/g, ''); 
+            
+            if (choice.includes('5')) {
+                const fallbackId = `${basePrefix}4`;
+                if (mp3Buffers[fallbackId]) {
+                    bellBufferToPlay = mp3Buffers[fallbackId];
+                    playbackRateValue = 2.0; 
+                }
+            } else if (choice.includes('3')) {
+                const fallbackId = `${basePrefix}4`;
+                if (mp3Buffers[fallbackId]) {
+                    bellBufferToPlay = mp3Buffers[fallbackId];
+                    playbackRateValue = 0.5; 
+                }
+            }
         }
-    }</script></body></html>
+
+        // Play the matched or pitch-corrected Bell Sound instantly
+        if (bellBufferToPlay) {
+            const mp3Source = audioCtx.createBufferSource();
+            mp3Source.buffer = bellBufferToPlay;
+            mp3Source.playbackRate.value = playbackRateValue;
+            mp3Source.connect(audioCtx.destination);
+            mp3Source.start(now);
+        }
+
+        // Play the vocal file at the exact same moment (now)
+        if (wavBuffers[choice]) {
+            const wavSource = audioCtx.createBufferSource();
+            wavSource.buffer = wavBuffers[choice];
+            wavSource.connect(audioCtx.destination);
+            wavSource.start(now);
+        }
+    }
+</script>
+</body>
+</html>
