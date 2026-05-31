@@ -1,12 +1,3 @@
-Got it! No synthesized bells, and let's make sure those vocals are actually playing alongside them every single time.
-What was going wrong:
-
-    The missing vocals: The previous code was looking for vocal fallback files inside a list that only had your 13 physical bell files loaded. Because the other keys didn't have loaded audio data, the vocal track stayed completely silent for them.
-
-    The bell timbre: To match the exact acoustic timbre of your real handbells, the app now uses your actual audio files for all 25 keys. For the notes you don't have files for, it mathematically shifts the pitch of your closest real bell file up or down an octave (2.0 or 0.5).
-
-Here is the clean, fixed code. Drop this into your file, and everything will line up perfectly.
-HTML
 
 <html lang="en"><head>
     <meta charset="UTF-8">
