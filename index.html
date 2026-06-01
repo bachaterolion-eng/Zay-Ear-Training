@@ -1,5 +1,5 @@
 
- <html lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,6 +71,7 @@
             box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
         }
 
+        /* NEW SCROLLABLE KEYBOARD WRAPPER */
         .keyboard-wrapper {
             background-color: var(--keyboard-bg);
             padding: 30px 20px;
@@ -85,167 +86,125 @@
             box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
 
-        @media screen and (orientation: landscape) {
-            .keyboard-wrapper {
-                max-width: 100%; 
-                display: flex;
-                justify-content: center;
-            }
-        }
-
-        .keyboard-wrapper::-webkit-scrollbar { height: 10px; }
-        .keyboard-wrapper::-webkit-scrollbar-track { background: #0b0f19; border-radius: 10px; }
-        .keyboard-wrapper::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-        .keyboard-wrapper::-webkit-scrollbar-thumb:hover { background: #0ea5e9; }
-
-        .piano-grid {
+        /* NEW FLAT FLAT PIANO STRUCTURE LAYOUT (No overlapping layers) */
+        .piano-flat-container {
+            display: flex;
             position: relative;
-            display: block;
             width: max-content;
-            height: 240px;
-            background: #000;
-            padding: 4px;
-            border-radius: 4px;
+            height: 250px;
+            background: #111424;
+            padding: 10px;
+            border-radius: 12px;
+            gap: 4px;
         }
 
-        .sharps-layer {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            width: 100%;
-            height: 145px;
-            z-index: 2;
-            pointer-events: none;
-            display: grid;
-            grid-template-columns: repeat(15, 60px);
-            gap: 5px;
+        /* Base Key Styles */
+        .bell-btn {
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 15px;
+            border: 2px solid rgba(0,0,0,0.3);
+            transition: transform 0.05s, box-shadow 0.05s;
         }
 
-        .naturals-layer { 
-            display: grid;
-            grid-template-columns: repeat(15, 60px);
-            gap: 5px;
-            height: 100%;
+        /* White Keys Formatted side-by-side */
+        .bell-btn.white-key {
+            width: 55px;
+            height: 230px;
+            background: linear-gradient(to bottom, #fcfcfc 0%, #e2e8f0 100%);
+            border-radius: 0 0 8px 8px;
+            box-shadow: inset 0 2px 2px #fff, 0 4px 6px rgba(0,0,0,0.15);
             z-index: 1;
         }
 
-        .bell-btn {
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            position: relative;
-            pointer-events: auto;
-            padding-bottom: 15px;
-            transition: transform 0.05s;
-        }
-        
-        /* Traditional White Keys Styling */
-        .naturals-layer .bell-btn {
-            height: 232px;
-            background: linear-gradient(to bottom, #eeeeee 0%, #ffffff 100%);
-            border-radius: 0 0 7px 7px;
-            box-shadow: inset 0 2px 3px #ffffff, 0 4px 6px rgba(0,0,0,0.25);
-            border-bottom: 4px solid #cccccc;
-        }
-
-        /* Traditional Black Keys Styling */
-        .sharps-layer .bell-btn {
-            height: 145px;
+        /* Black Keys Formatted side-by-side cleanly nested */
+        .bell-btn.black-key {
             width: 38px;
-            background: linear-gradient(to bottom, #333333 0%, #111111 100%);
-            border-radius: 0 0 5px 5px;
-            z-index: 3;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 2px 4px 8px rgba(0,0,0,0.5);
-            border-bottom: 5px solid #000000;
-            padding-bottom: 10px;
+            height: 145px;
+            background: linear-gradient(to bottom, #2d3748 0%, #1a202c 100%);
+            border-radius: 0 0 6px 6px;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.15), 0 3px 5px rgba(0,0,0,0.4);
+            z-index: 2;
+            /* Pulls the black keys visually into the natural layout gap */
+            margin-left: -21px;
+            margin-right: -21px;
         }
 
-        /* Subtle physical keypress movement */
-        .bell-btn.activated-outline { 
-            transform: translateY(2px);
-            z-index: 9999 !important; /* Force current key above its neighbors */
+        /* Active Physical Press Motion */
+        .bell-btn.activated-key {
+            transform: translateY(3px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
-        /* THE FIX: Top-Overlay Frame Layer */
-        .bell-btn.activated-outline::after {
+        /* THE FIX: Unblockable full outer glowing outline wrapper */
+        .bell-btn.activated-key::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 5px solid transparent; /* Thick outline size */
-            pointer-events: none;
-            z-index: 10000; /* Forces outline completely on top of everything */
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 4px solid currentColor; /* Automatically inherits the note color below */
             border-radius: inherit;
+            pointer-events: none;
+            box-shadow: 0 0 15px currentColor;
+            z-index: 99;
         }
         
         /* Centered Colored Solfege Square Badge */
         .color-badge {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: #ffffff;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8), -1px -1px 2px rgba(0,0,0,0.8);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Slightly smaller square badge for the black keys */
-        .sharps-layer .color-badge {
+        .black-key .color-badge {
             width: 32px;
             height: 32px;
-            font-size: 0.65rem;
-            border-radius: 6px;
+            font-size: 0.62rem;
+            border-radius: 5px;
         }
 
-        /* Piano layout spacing configurations for accidental positions */
-        #btn-Ab3  { grid-column: 1; margin-left: 38px; }
-        #btn-Bb3  { grid-column: 2; margin-left: 38px; }
-        #btn-Db4  { grid-column: 4; margin-left: 38px; }
-        #btn-Eb4  { grid-column: 5; margin-left: 38px; }
-        #btn-Gb4  { grid-column: 7; margin-left: 38px; }
-        #btn-Ab4  { grid-column: 8; margin-left: 38px; }
-        #btn-Bb4  { grid-column: 9; margin-left: 38px; }
-        #btn-Db5  { grid-column: 11; margin-left: 38px; }
-        #btn-Eb5  { grid-column: 12; margin-left: 38px; }
-        #btn-Gb5  { grid-column: 14; margin-left: 38px; }
+        /* Chromanote color matching classes for Badges and Dynamic Outlines */
+        .G3  { color: #4d908e; } .G4  { color: #4d908e; } .G5  { color: #4d908e; }
+        .Ab3 { color: #277da1; } .Ab4 { color: #277da1; } .Ab5 { color: #277da1; }
+        .A3  { color: #6a4c93; } .A4  { color: #6a4c93; }
+        .Bb3 { color: #8367a6; } .Bb4 { color: #8367a6; }
+        .B3  { color: #f35b8c; } .B4  { color: #f35b8c; }
+        .C4  { color: #d62828; } .C5  { color: #d62828; }
+        .Db4 { color: #e65c40; } .Db5 { color: #e65c40; }
+        .D4  { color: #f3722c; } .D5  { color: #f3722c; }
+        .Eb4 { color: #f9c74f; } .Eb5 { color: #f9c74f; }
+        .E4  { color: #f9cd13; } .E5  { color: #f9cd13; }
+        .F4  { color: #90be6d; } .F5  { color: #90be6d; }
+        .Gb4 { color: #43aa8b; } .Gb5 { color: #43aa8b; }
 
-        /* Exact Original Tone Palette Mapped into the Inner Badges */
-        .bell-btn.G3 .color-badge,  .bell-btn.G4 .color-badge,  .bell-btn.G5 .color-badge   { background: linear-gradient(to bottom, #3a6d6b, #4d908e); } 
-        .bell-btn.Ab3 .color-badge, .bell-btn.Ab4 .color-badge, .bell-btn.Ab5 .color-badge  { background: linear-gradient(to bottom, #1d5f7a, #277da1); } 
-        .bell-btn.A3 .color-badge,  .bell-btn.A4 .color-badge                               { background: linear-gradient(to bottom, #513970, #6a4c93); } 
-        .bell-btn.Bb3 .color-badge, .bell-btn.Bb4 .color-badge                              { background: linear-gradient(to bottom, #654e80, #8367a6); } 
-        .bell-btn.B3 .color-badge,  .bell-btn.B4 .color-badge                               { background: linear-gradient(to bottom, #c4436e, #f35b8c); } 
-        .bell-btn.C4 .color-badge,  .bell-btn.C5 .color-badge                               { background: linear-gradient(to bottom, #ab1f1f, #d62828); } 
-        .bell-btn.Db4 .color-badge, .bell-btn.Db5 .color-badge                              { background: linear-gradient(to bottom, #bd4931, #e65c40); } 
-        .bell-btn.D4 .color-badge,  .bell-btn.D5 .color-badge                               { background: linear-gradient(to bottom, #c75b20, #f3722c); } 
-        .bell-btn.Eb4 .color-badge, .bell-btn.Eb5 .color-badge                              { background: linear-gradient(to bottom, #cca23c, #f9c74f); } 
-        .bell-btn.E4 .color-badge,  .bell-btn.E5 .color-badge                               { background: linear-gradient(to bottom, #cca60f, #f9cd13); } 
-        .bell-btn.F4 .color-badge,  .bell-btn.F5 .color-badge                               { background: linear-gradient(to bottom, #729955, #90be6d); } 
-        .bell-btn.Gb4 .color-badge, .bell-btn.Gb5 .color-badge                              { background: linear-gradient(to bottom, #32826a, #43aa8b); } 
-
-        /* High-Visibility Custom Chromacolor Top-Overlaid Frame Assignments */
-        .bell-btn.G3.activated-outline::after,  .bell-btn.G4.activated-outline::after,  .bell-btn.G5.activated-outline::after   { border-color: #4d908e; }
-        .bell-btn.Ab3.activated-outline::after, .bell-btn.Ab4.activated-outline::after, .bell-btn.Ab5.activated-outline::after  { border-color: #277da1; }
-        .bell-btn.A3.activated-outline::after,  .bell-btn.A4.activated-outline::after                                 { border-color: #6a4c93; }
-        .bell-btn.Bb3.activated-outline::after, .bell-btn.Bb4.activated-outline::after                                { border-color: #8367a6; }
-        .bell-btn.B3.activated-outline::after,  .bell-btn.B4.activated-outline::after                                 { border-color: #f35b8c; }
-        .bell-btn.C4.activated-outline::after,  .bell-btn.C5.activated-outline::after                                 { border-color: #d62828; }
-        .bell-btn.Db4.activated-outline::after, .bell-btn.Db5.activated-outline::after                                { border-color: #e65c40; }
-        .bell-btn.D4.activated-outline::after,  .bell-btn.D5.activated-outline::after                                 { border-color: #f3722c; }
-        .bell-btn.Eb4.activated-outline::after, .bell-btn.Eb5.activated-outline::after                                { border-color: #f9c74f; }
-        .bell-btn.E4.activated-outline::after,  .bell-btn.E5.activated-outline::after                                 { border-color: #f9cd13; }
-        .bell-btn.F4.activated-outline::after,  .bell-btn.F5.activated-outline::after                                 { border-color: #90be6d; }
-        .bell-btn.Gb4.activated-outline::after, .bell-btn.Gb5.activated-outline::after                                { border-color: #43aa8b; }
+        /* Assign background gradients directly to internal badges */
+        .G3 .color-badge,  .G4 .color-badge,  .G5 .color-badge   { background: linear-gradient(to bottom, #3a6d6b, #4d908e); } 
+        .Ab3 .color-badge, .Ab4 .color-badge, .Ab5 .color-badge  { background: linear-gradient(to bottom, #1d5f7a, #277da1); } 
+        .A3 .color-badge,  .A4 .color-badge                               { background: linear-gradient(to bottom, #513970, #6a4c93); } 
+        .Bb3 .color-badge, .Bb4 .color-badge                              { background: linear-gradient(to bottom, #654e80, #8367a6); } 
+        .B3 .color-badge,  .B4 .color-badge                               { background: linear-gradient(to bottom, #c4436e, #f35b8c); } 
+        .C4 .color-badge,  .C5 .color-badge                               { background: linear-gradient(to bottom, #ab1f1f, #d62828); } 
+        .Db4 .color-badge, .Db5 .color-badge                              { background: linear-gradient(to bottom, #bd4931, #e65c40); } 
+        .D4 .color-badge,  .D5 .color-badge                               { background: linear-gradient(to bottom, #c75b20, #f3722c); } 
+        .Eb4 .color-badge, .Eb5 .color-badge                              { background: linear-gradient(to bottom, #cca23c, #f9c74f); } 
+        .E4 .color-badge,  .E5 .color-badge                               { background: linear-gradient(to bottom, #cca60f, #f9cd13); } 
+        .F4 .color-badge,  .F5 .color-badge                               { background: linear-gradient(to bottom, #729955, #90be6d); } 
+        .Gb4 .color-badge, .Gb5 .color-badge                              { background: linear-gradient(to bottom, #32826a, #43aa8b); } 
     </style>
 </head>
 <body>
@@ -263,10 +222,7 @@
         </div>
 
         <div class="keyboard-wrapper">
-            <div class="piano-grid">
-                <div class="sharps-layer" id="sharps-container"></div>
-                <div class="naturals-layer" id="naturals-container"></div>
-            </div>
+            <div class="piano-flat-container" id="piano-container"></div>
         </div>
     </div>
 </div>
@@ -310,22 +266,17 @@
     let voiceBuffers = {}; 
     let bellBuffers = {};
 
-    const sharpsRow = document.getElementById('sharps-container');
-    const naturalsRow = document.getElementById('naturals-container');
+    const pianoContainer = document.getElementById('piano-container');
 
+    // Generating keys sequentially into one unified grid structure
     progression.forEach((note) => {
         const btn = document.createElement('button');
-        btn.className = `bell-btn ${note.style}`;
+        btn.className = `bell-btn ${note.type === 'black' ? 'black-key' : 'white-key'} ${note.style}`;
         btn.id = `btn-${note.id}`;
         btn.setAttribute('onclick', `handleInput('${note.id}')`);
         
         btn.innerHTML = `<div class="color-badge">${note.solfege}</div>`;
-
-        if (note.type === "black") {
-            sharpsRow.appendChild(btn);
-        } else {
-            naturalsRow.appendChild(btn);
-        }
+        pianoContainer.appendChild(btn);
     });
 
     function setAudioMode(mode) {
@@ -368,13 +319,13 @@
             audioCtx.resume();
         }
 
-        // Apply top overlay frame state instantly
+        // Instantly trigger uninhibited outer glow highlight
         const targetBtn = document.getElementById(`btn-${choice}`);
         if (targetBtn) {
-            targetBtn.classList.add('activated-outline');
+            targetBtn.classList.add('activated-key');
             setTimeout(() => {
-                targetBtn.classList.remove('activated-outline');
-            }, 300);
+                targetBtn.classList.remove('activated-key');
+            }, 250);
         }
 
         const now = audioCtx.currentTime;
