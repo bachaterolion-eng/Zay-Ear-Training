@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -72,7 +73,7 @@
 
         .keyboard-wrapper {
             background-color: var(--keyboard-bg);
-            padding: 40px 30px; /* Expanded padding so the outline glow is never cut off */
+            padding: 40px 30px;
             border-radius: 20px;
             width: 100%;
             max-width: 1100px; 
@@ -125,6 +126,7 @@
             grid-template-columns: repeat(15, 60px);
             gap: 5px;
             height: 100%;
+            z-index: 1;
         }
 
         .bell-btn {
@@ -134,7 +136,7 @@
             align-items: flex-end;
             justify-content: center;
             position: relative;
-            transition: filter 0.2s, transform 0.05s, box-shadow 0.1s ease-out;
+            transition: filter 0.1s ease-out, transform 0.05s;
             pointer-events: auto;
             padding-bottom: 15px;
         }
@@ -224,19 +226,19 @@
         .bell-btn.F4 .color-badge,  .bell-btn.F5 .color-badge                               { background: linear-gradient(to bottom, #729955, #90be6d); } 
         .bell-btn.Gb4 .color-badge, .bell-btn.Gb5 .color-badge                              { background: linear-gradient(to bottom, #32826a, #43aa8b); } 
 
-        /* Explicit Chromacolor Box-Shadow Outlines (Z-index ensures glow stays visible on top of neighboring keys) */
-        .bell-btn.G3.activated-glow,  .bell-btn.G4.activated-glow,  .bell-btn.G5.activated-glow   { z-index: 10; box-shadow: 0 0 25px 8px #4d908e, inset 0 2px 3px #ffffff; }
-        .bell-btn.Ab3.activated-glow, .bell-btn.Ab4.activated-glow, .bell-btn.Ab5.activated-glow  { z-index: 10; box-shadow: 0 0 25px 8px #277da1, inset 0 1px 1px rgba(255,255,255,0.2); }
-        .bell-btn.A3.activated-glow,  .bell-btn.A4.activated-glow                                 { z-index: 10; box-shadow: 0 0 25px 8px #6a4c93, inset 0 2px 3px #ffffff; }
-        .bell-btn.Bb3.activated-glow, .bell-btn.Bb4.activated-glow                                { z-index: 10; box-shadow: 0 0 25px 8px #8367a6, inset 0 1px 1px rgba(255,255,255,0.2); }
-        .bell-btn.B3.activated-glow,  .bell-btn.B4.activated-glow                                 { z-index: 10; box-shadow: 0 0 25px 8px #f35b8c, inset 0 2px 3px #ffffff; }
-        .bell-btn.C4.activated-glow,  .bell-btn.C5.activated-glow                                 { z-index: 10; box-shadow: 0 0 25px 8px #d62828, inset 0 2px 3px #ffffff; }
-        .bell-btn.Db4.activated-glow, .bell-btn.Db5.activated-glow                                { z-index: 10; box-shadow: 0 0 25px 8px #e65c40, inset 0 1px 1px rgba(255,255,255,0.2); }
-        .bell-btn.D4.activated-glow,  .bell-btn.D5.activated-glow                                 { z-index: 10; box-shadow: 0 0 25px 8px #f3722c, inset 0 2px 3px #ffffff; }
-        .bell-btn.Eb4.activated-glow, .bell-btn.Eb5.activated-glow                                { z-index: 10; box-shadow: 0 0 25px 8px #f9c74f, inset 0 1px 1px rgba(255,255,255,0.2); }
-        .bell-btn.E4.activated-glow,  .bell-btn.E5.activated-glow                                 { z-index: 10; box-shadow: 0 0 25px 8px #f9cd13, inset 0 2px 3px #ffffff; }
-        .bell-btn.F4.activated-glow,  .bell-btn.F5.activated-glow                                 { z-index: 10; box-shadow: 0 0 25px 8px #90be6d, inset 0 2px 3px #ffffff; }
-        .bell-btn.Gb4.activated-glow, .bell-btn.Gb5.activated-glow                                { z-index: 10; box-shadow: 0 0 25px 8px #43aa8b, inset 0 1px 1px rgba(255,255,255,0.2); }
+        /* High-Visibility Drop Shadow Chromacolor Outline Effects */
+        .bell-btn.G3.activated-glow,  .bell-btn.G4.activated-glow,  .bell-btn.G5.activated-glow   { filter: drop-shadow(0px 0px 14px #4d908e); }
+        .bell-btn.Ab3.activated-glow, .bell-btn.Ab4.activated-glow, .bell-btn.Ab5.activated-glow  { filter: drop-shadow(0px 0px 14px #277da1); }
+        .bell-btn.A3.activated-glow,  .bell-btn.A4.activated-glow                                 { filter: drop-shadow(0px 0px 14px #6a4c93); }
+        .bell-btn.Bb3.activated-glow, .bell-btn.Bb4.activated-glow                                { filter: drop-shadow(0px 0px 14px #8367a6); }
+        .bell-btn.B3.activated-glow,  .bell-btn.B4.activated-glow                                 { filter: drop-shadow(0px 0px 14px #f35b8c); }
+        .bell-btn.C4.activated-glow,  .bell-btn.C5.activated-glow                                 { filter: drop-shadow(0px 0px 14px #d62828); }
+        .bell-btn.Db4.activated-glow, .bell-btn.Db5.activated-glow                                { filter: drop-shadow(0px 0px 14px #e65c40); }
+        .bell-btn.D4.activated-glow,  .bell-btn.D5.activated-glow                                 { filter: drop-shadow(0px 0px 14px #f3722c); }
+        .bell-btn.Eb4.activated-glow, .bell-btn.Eb5.activated-glow                                { filter: drop-shadow(0px 0px 14px #f9c74f); }
+        .bell-btn.E4.activated-glow,  .bell-btn.E5.activated-glow                                 { filter: drop-shadow(0px 0px 14px #f9cd13); }
+        .bell-btn.F4.activated-glow,  .bell-btn.F5.activated-glow                                 { filter: drop-shadow(0px 0px 14px #90be6d); }
+        .bell-btn.Gb4.activated-glow, .bell-btn.Gb5.activated-glow                                { filter: drop-shadow(0px 0px 14px #43aa8b); }
     </style>
 </head>
 <body>
@@ -371,13 +373,15 @@
             audioCtx.resume();
         }
 
-        // Add glow animation class safely via JS to avoid cross-device active state issues
+        // Force layer dominance dynamically on trigger so neighboring elements can't swallow the outline glow
         const targetBtn = document.getElementById(`btn-${choice}`);
         if (targetBtn) {
+            targetBtn.style.zIndex = "999";
             targetBtn.classList.add('activated-glow');
             setTimeout(() => {
                 targetBtn.classList.remove('activated-glow');
-            }, 300); // Glow remains visible for 300ms matching a solid keypress duration
+                targetBtn.style.zIndex = ""; // Restore standard layout stacking order
+            }, 350);
         }
 
         const now = audioCtx.currentTime;
