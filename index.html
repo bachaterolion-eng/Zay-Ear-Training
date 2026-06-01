@@ -1,5 +1,5 @@
 
-<html lang="en">
+ <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,9 +136,9 @@
             align-items: flex-end;
             justify-content: center;
             position: relative;
-            transition: transform 0.05s;
             pointer-events: auto;
             padding-bottom: 15px;
+            transition: transform 0.05s;
         }
         
         /* Traditional White Keys Styling */
@@ -162,9 +162,24 @@
             padding-bottom: 10px;
         }
 
-        /* Physical movement animation on keypress */
-        .bell-btn.activated-press { 
+        /* Subtle physical keypress movement */
+        .bell-btn.activated-outline { 
             transform: translateY(2px);
+            z-index: 9999 !important; /* Force current key above its neighbors */
+        }
+
+        /* THE FIX: Top-Overlay Frame Layer */
+        .bell-btn.activated-outline::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 5px solid transparent; /* Thick outline size */
+            pointer-events: none;
+            z-index: 10000; /* Forces outline completely on top of everything */
+            border-radius: inherit;
         }
         
         /* Centered Colored Solfege Square Badge */
@@ -182,7 +197,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             border: 1px solid rgba(255, 255, 255, 0.15);
             margin: 0 auto;
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
         }
 
         /* Slightly smaller square badge for the black keys */
@@ -219,19 +233,19 @@
         .bell-btn.F4 .color-badge,  .bell-btn.F5 .color-badge                               { background: linear-gradient(to bottom, #729955, #90be6d); } 
         .bell-btn.Gb4 .color-badge, .bell-btn.Gb5 .color-badge                              { background: linear-gradient(to bottom, #32826a, #43aa8b); } 
 
-        /* Unblockable Chromacolor Highlights targeted at the Solfege Badges */
-        .bell-btn.G3.activated-press .color-badge,  .bell-btn.G4.activated-press .color-badge,  .bell-btn.G5.activated-press .color-badge   { transform: scale(1.15); box-shadow: 0 0 20px 6px #4d908e; }
-        .bell-btn.Ab3.activated-press .color-badge, .bell-btn.Ab4.activated-press .color-badge, .bell-btn.Ab5.activated-press .color-badge  { transform: scale(1.15); box-shadow: 0 0 20px 6px #277da1; }
-        .bell-btn.A3.activated-press .color-badge,  .bell-btn.A4.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #6a4c93; }
-        .bell-btn.Bb3.activated-press .color-badge, .bell-btn.Bb4.activated-press .color-badge                                { transform: scale(1.15); box-shadow: 0 0 20px 6px #8367a6; }
-        .bell-btn.B3.activated-press .color-badge,  .bell-btn.B4.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #f35b8c; }
-        .bell-btn.C4.activated-press .color-badge,  .bell-btn.C5.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #d62828; }
-        .bell-btn.Db4.activated-press .color-badge, .bell-btn.Db5.activated-press .color-badge                                { transform: scale(1.15); box-shadow: 0 0 20px 6px #e65c40; }
-        .bell-btn.D4.activated-press .color-badge,  .bell-btn.D5.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #f3722c; }
-        .bell-btn.Eb4.activated-press .color-badge, .bell-btn.Eb5.activated-press .color-badge                                { transform: scale(1.15); box-shadow: 0 0 20px 6px #f9c74f; }
-        .bell-btn.E4.activated-press .color-badge,  .bell-btn.E5.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #f9cd13; }
-        .bell-btn.F4.activated-press .color-badge,  .bell-btn.F5.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #90be6d; }
-        .bell-btn.Gb4.activated-press .color-badge, .bell-btn.Gb5.activated-press .color-badge                                { transform: scale(1.15); box-shadow: 0 0 20px 6px #43aa8b; }
+        /* High-Visibility Custom Chromacolor Top-Overlaid Frame Assignments */
+        .bell-btn.G3.activated-outline::after,  .bell-btn.G4.activated-outline::after,  .bell-btn.G5.activated-outline::after   { border-color: #4d908e; }
+        .bell-btn.Ab3.activated-outline::after, .bell-btn.Ab4.activated-outline::after, .bell-btn.Ab5.activated-outline::after  { border-color: #277da1; }
+        .bell-btn.A3.activated-outline::after,  .bell-btn.A4.activated-outline::after                                 { border-color: #6a4c93; }
+        .bell-btn.Bb3.activated-outline::after, .bell-btn.Bb4.activated-outline::after                                { border-color: #8367a6; }
+        .bell-btn.B3.activated-outline::after,  .bell-btn.B4.activated-outline::after                                 { border-color: #f35b8c; }
+        .bell-btn.C4.activated-outline::after,  .bell-btn.C5.activated-outline::after                                 { border-color: #d62828; }
+        .bell-btn.Db4.activated-outline::after, .bell-btn.Db5.activated-outline::after                                { border-color: #e65c40; }
+        .bell-btn.D4.activated-outline::after,  .bell-btn.D5.activated-outline::after                                 { border-color: #f3722c; }
+        .bell-btn.Eb4.activated-outline::after, .bell-btn.Eb5.activated-outline::after                                { border-color: #f9c74f; }
+        .bell-btn.E4.activated-outline::after,  .bell-btn.E5.activated-outline::after                                 { border-color: #f9cd13; }
+        .bell-btn.F4.activated-outline::after,  .bell-btn.F5.activated-outline::after                                 { border-color: #90be6d; }
+        .bell-btn.Gb4.activated-outline::after, .bell-btn.Gb5.activated-outline::after                                { border-color: #43aa8b; }
     </style>
 </head>
 <body>
@@ -354,13 +368,13 @@
             audioCtx.resume();
         }
 
-        // Toggle badge highlight class instantly
+        // Apply top overlay frame state instantly
         const targetBtn = document.getElementById(`btn-${choice}`);
         if (targetBtn) {
-            targetBtn.classList.add('activated-press');
+            targetBtn.classList.add('activated-outline');
             setTimeout(() => {
-                targetBtn.classList.remove('activated-press');
-            }, 250);
+                targetBtn.classList.remove('activated-outline');
+            }, 300);
         }
 
         const now = audioCtx.currentTime;
