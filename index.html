@@ -136,7 +136,7 @@
             align-items: flex-end;
             justify-content: center;
             position: relative;
-            transition: border-color 0.05s ease-out, transform 0.05s;
+            transition: transform 0.05s;
             pointer-events: auto;
             padding-bottom: 15px;
         }
@@ -147,7 +147,7 @@
             background: linear-gradient(to bottom, #eeeeee 0%, #ffffff 100%);
             border-radius: 0 0 7px 7px;
             box-shadow: inset 0 2px 3px #ffffff, 0 4px 6px rgba(0,0,0,0.25);
-            border-bottom: 6px solid #cccccc; /* Thick bottom edge baseline */
+            border-bottom: 4px solid #cccccc;
         }
 
         /* Traditional Black Keys Styling */
@@ -158,14 +158,13 @@
             border-radius: 0 0 5px 5px;
             z-index: 3;
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 2px 4px 8px rgba(0,0,0,0.5);
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            border-bottom: 6px solid #000000;
+            border-bottom: 5px solid #000000;
             padding-bottom: 10px;
         }
 
-        /* Subtle physical keypress movement */
-        .bell-btn.activated-edge { 
-            transform: translateY(1px);
+        /* Physical movement animation on keypress */
+        .bell-btn.activated-press { 
+            transform: translateY(2px);
         }
         
         /* Centered Colored Solfege Square Badge */
@@ -183,6 +182,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             border: 1px solid rgba(255, 255, 255, 0.15);
             margin: 0 auto;
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
         }
 
         /* Slightly smaller square badge for the black keys */
@@ -219,21 +219,19 @@
         .bell-btn.F4 .color-badge,  .bell-btn.F5 .color-badge                               { background: linear-gradient(to bottom, #729955, #90be6d); } 
         .bell-btn.Gb4 .color-badge, .bell-btn.Gb5 .color-badge                              { background: linear-gradient(to bottom, #32826a, #43aa8b); } 
 
-        /* High-Visibility Chromanote Color Edges for White Keys (Bottom Border Only) */
-        .naturals-layer .bell-btn.G3.activated-edge,  .naturals-layer .bell-btn.G4.activated-edge,  .naturals-layer .bell-btn.G5.activated-edge   { border-bottom-color: #4d908e !important; }
-        .naturals-layer .bell-btn.A3.activated-edge,  .naturals-layer .bell-btn.A4.activated-edge                                                 { border-bottom-color: #6a4c93 !important; }
-        .naturals-layer .bell-btn.B3.activated-edge,  .naturals-layer .bell-btn.B4.activated-edge                                                 { border-bottom-color: #f35b8c !important; }
-        .naturals-layer .bell-btn.C4.activated-edge,  .naturals-layer .bell-btn.C5.activated-edge                                                 { border-bottom-color: #d62828 !important; }
-        .naturals-layer .bell-btn.D4.activated-edge,  .naturals-layer .bell-btn.D5.activated-edge                                                 { border-bottom-color: #f3722c !important; }
-        .naturals-layer .bell-btn.E4.activated-edge,  .naturals-layer .bell-btn.E5.activated-edge                                                 { border-bottom-color: #f9cd13 !important; }
-        .naturals-layer .bell-btn.F4.activated-edge,  .naturals-layer .bell-btn.F5.activated-edge                                                 { border-bottom-color: #90be6d !important; }
-
-        /* High-Visibility Chromanote Color Edges for Black Keys (Full Border Accent Frame) */
-        .sharps-layer .bell-btn.Ab3.activated-edge, .sharps-layer .bell-btn.Ab4.activated-edge, .sharps-layer .bell-btn.Ab5.activated-edge  { border-color: #277da1 !important; border-bottom-color: #277da1 !important; }
-        .sharps-layer .bell-btn.Bb3.activated-edge, .sharps-layer .bell-btn.Bb4.activated-edge                                { border-color: #8367a6 !important; border-bottom-color: #8367a6 !important; }
-        .sharps-layer .bell-btn.Db4.activated-edge, .sharps-layer .bell-btn.Db5.activated-edge                                { border-color: #e65c40 !important; border-bottom-color: #e65c40 !important; }
-        .sharps-layer .bell-btn.Eb4.activated-edge, .sharps-layer .bell-btn.Eb5.activated-edge                                { border-color: #f9c74f !important; border-bottom-color: #f9c74f !important; }
-        .sharps-layer .bell-btn.Gb4.activated-edge, .sharps-layer .bell-btn.Gb5.activated-edge                                { border-color: #43aa8b !important; border-bottom-color: #43aa8b !important; }
+        /* Unblockable Chromacolor Highlights targeted at the Solfege Badges */
+        .bell-btn.G3.activated-press .color-badge,  .bell-btn.G4.activated-press .color-badge,  .bell-btn.G5.activated-press .color-badge   { transform: scale(1.15); box-shadow: 0 0 20px 6px #4d908e; }
+        .bell-btn.Ab3.activated-press .color-badge, .bell-btn.Ab4.activated-press .color-badge, .bell-btn.Ab5.activated-press .color-badge  { transform: scale(1.15); box-shadow: 0 0 20px 6px #277da1; }
+        .bell-btn.A3.activated-press .color-badge,  .bell-btn.A4.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #6a4c93; }
+        .bell-btn.Bb3.activated-press .color-badge, .bell-btn.Bb4.activated-press .color-badge                                { transform: scale(1.15); box-shadow: 0 0 20px 6px #8367a6; }
+        .bell-btn.B3.activated-press .color-badge,  .bell-btn.B4.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #f35b8c; }
+        .bell-btn.C4.activated-press .color-badge,  .bell-btn.C5.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #d62828; }
+        .bell-btn.Db4.activated-press .color-badge, .bell-btn.Db5.activated-press .color-badge                                { transform: scale(1.15); box-shadow: 0 0 20px 6px #e65c40; }
+        .bell-btn.D4.activated-press .color-badge,  .bell-btn.D5.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #f3722c; }
+        .bell-btn.Eb4.activated-press .color-badge, .bell-btn.Eb5.activated-press .color-badge                                { transform: scale(1.15); box-shadow: 0 0 20px 6px #f9c74f; }
+        .bell-btn.E4.activated-press .color-badge,  .bell-btn.E5.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #f9cd13; }
+        .bell-btn.F4.activated-press .color-badge,  .bell-btn.F5.activated-press .color-badge                                 { transform: scale(1.15); box-shadow: 0 0 20px 6px #90be6d; }
+        .bell-btn.Gb4.activated-press .color-badge, .bell-btn.Gb5.activated-press .color-badge                                { transform: scale(1.15); box-shadow: 0 0 20px 6px #43aa8b; }
     </style>
 </head>
 <body>
@@ -356,13 +354,13 @@
             audioCtx.resume();
         }
 
-        // Toggle the edge color state
+        // Toggle badge highlight class instantly
         const targetBtn = document.getElementById(`btn-${choice}`);
         if (targetBtn) {
-            targetBtn.classList.add('activated-edge');
+            targetBtn.classList.add('activated-press');
             setTimeout(() => {
-                targetBtn.classList.remove('activated-edge');
-            }, 300);
+                targetBtn.classList.remove('activated-press');
+            }, 250);
         }
 
         const now = audioCtx.currentTime;
