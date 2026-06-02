@@ -42,7 +42,6 @@
 
         #msg { font-weight: 600; color: #94a3b8; min-height: 1.5rem; text-align: center; margin-bottom: 20px; font-size: 1.1rem; }
 
-        /* Audio Mode Controls Panel */
         .controls-panel {
             display: flex;
             background-color: var(--keyboard-bg);
@@ -72,7 +71,6 @@
             box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
         }
 
-        /* Keyboard Wrapper Area */
         .keyboard-wrapper {
             background-color: var(--keyboard-bg);
             padding: 40px 30px;
@@ -88,15 +86,13 @@
             position: relative;
         }
 
-        /* NEW HOLISTIC CANVAS PIANO GRAPHIC WRAPPER */
         .piano-canvas-container {
             position: relative;
-            width: 955px; /* Exact strict container width for the 15-key spacing footprint */
+            width: 955px; 
             height: 250px;
             margin: 0 auto;
         }
 
-        /* Master Global Glow Layer Backing */
         #glowCanvas {
             position: absolute;
             top: -15px;
@@ -117,7 +113,6 @@
             z-index: 2;
         }
 
-        /* Base Key Formatting Attributes */
         .bell-btn {
             cursor: pointer;
             position: relative;
@@ -127,13 +122,11 @@
             align-items: center;
             padding-bottom: 20px;
             border: 1px solid rgba(0, 0, 0, 0.25);
-            transition: transform 0.05s ease-out;
-            background: #ffffff;
+            transition: transform 0.05s ease-out, background 0.05s ease-out;
         }
 
-        /* White Keys Side-By-Side Aspect Layout */
         .bell-btn.white-key {
-            width: 63.66px; /* Dynamically divides global footprint width flawlessly */
+            width: 63.66px; 
             height: 240px;
             background: linear-gradient(to bottom, #eeeeee 0%, #ffffff 100%);
             border-radius: 0 0 6px 6px;
@@ -141,7 +134,6 @@
             z-index: 3;
         }
 
-        /* Black Keys Overlay Aspect Layout */
         .bell-btn.black-key {
             width: 40px;
             height: 150px;
@@ -153,11 +145,13 @@
             margin-right: -20px;
         }
 
-        .bell-btn:active, .bell-btn.visual-active {
-            transform: translateY(2px);
+        /* FAILSAFE 1 & 2: Push Down Motion + Instant Full Solid Key Background Paint */
+        .bell-btn.visual-active {
+            transform: translateY(4px) !important;
+            background: var(--chroma-color) !important;
+            color: #ffffff !important;
         }
         
-        /* Centered Colored Solfege Square Badge */
         .color-badge {
             width: 44px;
             height: 44px;
@@ -178,10 +172,9 @@
             height: 32px;
             font-size: 0.65rem;
             border-radius: 6px;
-            padding-bottom: 0;
         }
 
-        /* Exact Tone Map Palette Bindings into the inner Badges */
+        /* Color assignments directly to inner badges */
         .G3 .color-badge,  .G4 .color-badge,  .G5 .color-badge   { background: linear-gradient(to bottom, #3a6d6b, #4d908e); } 
         .Ab3 .color-badge, .Ab4 .color-badge, .Ab5 .color-badge  { background: linear-gradient(to bottom, #1d5f7a, #277da1); } 
         .A3 .color-badge,  .A4 .color-badge                               { background: linear-gradient(to bottom, #513970, #6a4c93); } 
@@ -225,7 +218,6 @@
     
     let currentAudioMode = 'both';
 
-    // Added explicit 'hex' chroma tag to immediately transfer direct data parameters to the canvas element draw loop
     const progression = [
         { id: "G3",  solfege: "So 3", voiceWav: "So 3.wav",  bellSourceFile: "So 4 Bell.wav",  bellRate: 0.5, type: "white", style: "G3",  hex: "#4d908e" },
         { id: "Ab3", solfege: "Si 3", voiceWav: "Si 3.wav",  bellSourceFile: "Si 4 Bell.wav",  bellRate: 0.5, type: "black", style: "Ab3", hex: "#277da1" },
@@ -263,11 +255,12 @@
     const canvas = document.getElementById('glowCanvas');
     const ctx = canvas.getContext('2d');
 
-    // Generate keys sequentially into one unified container element
     progression.forEach((note) => {
         const btn = document.createElement('button');
         btn.className = `bell-btn ${note.type === 'black' ? 'black-key' : 'white-key'} ${note.style}`;
         btn.id = `btn-${note.id}`;
+        // Set inline CSS custom property directly to guarantee property inheritance availability
+        btn.style.setProperty('--chroma-color', note.hex);
         btn.setAttribute('onclick', `handleInput('${note.id}')`);
         
         btn.innerHTML = `<div class="color-badge">${note.solfege}</div>`;
@@ -309,37 +302,30 @@
     }
     loadAllSounds();
 
-    // High Performance Canvas Rendering Engine Interface Function
+    // FAILSAFE 3: Heavy Outer Canvas Stroke Aura Draw Engine
     function drawGlowOutline(element, colorHex) {
-        // Clear canvas instantly
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
         if (!element) return;
 
-        // Extract precise offset locations relative to container layout
         const rect = element.getBoundingClientRect();
         const containerRect = buttonsContainer.getBoundingClientRect();
 
-        // Calculate location coordinates adjusted for canvas boundaries
         const x = (rect.left - containerRect.left) + 15;
         const y = (rect.top - containerRect.top) + 15;
         const width = rect.width;
         const height = rect.height;
 
-        // Render thick glowing stroke aura on canvas
         ctx.save();
-        ctx.shadowBlur = 20;
+        ctx.shadowBlur = 25;
         ctx.shadowColor = colorHex;
         ctx.strokeStyle = colorHex;
-        ctx.lineWidth = 6;
+        ctx.lineWidth = 8;
         
-        // Match piano button round curvature geometry boundaries
         ctx.beginPath();
         ctx.roundRect(x, y, width, height, 6);
         ctx.stroke();
         ctx.restore();
 
-        // Automatic clean wipe fade out after click duration ends
         setTimeout(() => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }, 350);
@@ -354,10 +340,7 @@
         const targetBtn = document.getElementById(`btn-${choice}`);
         
         if (targetBtn && matchingNote) {
-            // Apply visual tactile snap drop class movement
             targetBtn.classList.add('visual-active');
-            
-            // Execute absolute top canvas draw stroke wrapper engine
             drawGlowOutline(targetBtn, matchingNote.hex);
             
             setTimeout(() => {
